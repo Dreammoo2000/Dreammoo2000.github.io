@@ -1,2 +1,2 @@
 # Dreammoo2000.github.io
-print("hello world")
+This is the Honkai Star Rail damage calculator
