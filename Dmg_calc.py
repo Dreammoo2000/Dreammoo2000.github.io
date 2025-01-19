@@ -1,2 +1,5 @@
+import os
+
 print("hello world")
-cd Dreammoo2000.github.io
+os.chdir("Dreammoo2000.github.io")
+print(f"Changed directory to {os.getcwd()}")
