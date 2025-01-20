@@ -1,35 +1,40 @@
-# Values for Acheron
-Acheron = True  # Main DPS character
-Energy = 0 if Acheron else None  # Fixed 0 energy for Acheron
+import json
 
-# Basic stats
-Atk = 5000
-Dmg_Multiplier = 500 / 100  # Convert percentage to decimal
-Dmg = 300 / 100  # Convert percentage to decimal
-Crit_Dmg = 300 / 100  # Convert percentage to decimal
+# Load the JSON data
+with open("templates/template.json", "r") as f:
+    data = json.load(f)
+
+# Extract data for characters and enemies
+Acheron = data["characters"]["Acheron"]
+Ruan_Mei = data["characters"]["Ruan_Mei"]
+enemy = data["enemy"]
+
+# Character stats
+Atk = Acheron["Atk"]
+Dmg = Acheron["Dmg"] / 100  # Convert percentage to decimal
+Crit_Dmg = Acheron["Crit_Dmg"] / 100
+Dmg_Multiplier = Acheron["Dmg_Multiplier"] / 100
+Energy = Acheron["Energy"]
+
+# Ruan Mei stats
+Dmg += Ruan_Mei["Dmg_Bonus"] / 100  # Add bonus damage
+Res_Pen = Ruan_Mei["Res_Pen"] / 100  # Resistance penetration
 
 # Enemy stats
-Enemy_Lv = 95
-Def_Down = 0  # No defense down applied
-Enemy_Weak = True  # Enemy is weak
-Vulnerability = 50 / 100  # Convert percentage to decimal
-Toughness_Broken = False  # Enemy is not toughness broken
-Res_Pen = 0  # Resistance Penetration
-
-# Adjustments for Ruan Mei
-Ruan_mei = True  # Ruan Mei is active
-if Ruan_mei:
-    Dmg += 68 / 100  # 68% additional damage
-    Res_Pen += 25 / 100  # 25% resistance penetration
+Enemy_Lv = enemy["Level"]
+Enemy_Weak = enemy["Weak"]
+Vulnerability = enemy["Vulnerability"] / 100  # Convert percentage to decimal
+Toughness_Broken = enemy["Toughness_Broken"]
+Def_Down = enemy["Def_Down"]
 
 # Calculate enemy defense multiplier
 Enemy_Defense_Multiplier = 100 / ((Enemy_Lv + 20) * (1 - Def_Down) + 100)
 
 # Enemy type multiplier
 if Enemy_Weak:
-    Enemy_Type = 100 / 100  # Convert to decimal for calculation
+    Enemy_Type = 100 / 100  # Convert to decimal
 else:
-    Enemy_Type = 80 / 100  # Assume false weak as default
+    Enemy_Type = 80 / 100  # Default to 80% for non-weak
 
 # Toughness multiplier
 Toughness = 90 / 100 if not Toughness_Broken else 100 / 100
