@@ -1,0 +1,22 @@
+{
+    "characters": {
+        "Acheron": {
+            "Atk": 5000,
+            "Dmg": 300,
+            "Crit_Dmg": 300,
+            "Dmg_Multiplier": 500,
+            "Energy": 0
+        },
+        "Ruan_Mei": {
+            "Dmg_Bonus": 68,
+            "Res_Pen": 25
+        }
+    },
+    "enemy": {
+        "Level": 95,
+        "Weak": true,
+        "Vulnerability": 50,
+        "Toughness_Broken": false,
+        "Def_Down": 0
+    }
+}
