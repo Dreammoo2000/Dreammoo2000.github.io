@@ -3,82 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main Character Damage Calculator</title>
+  <title>Damage Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select {
+      margin-bottom: 10px;
+    }
+    .derived-values {
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-top: 20px;
+    }
+    .derived-values ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .derived-values li {
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Main Character Damage Calculator</h1>
+  <h1>Damage Calculator</h1>
   <form>
-    <label for="Atk">Attack (Atk):</label>
-    <input type="number" id="Atk" value="5000" step="1"><br><br>
+    <h2>Character and Lightcone Selection</h2>
+    <label for="CharacterBaseAtk">Character Base ATK:</label>
+    <select id="CharacterBaseAtk" onchange="calculateDerivedVariables()">
+      <option value="699">Acheron (699)</option>
+      <option value="679">The Herta (679)</option>
+      <option value="649">Seele (649)</option>
+    </select><br>
 
-    <label for="DmgMultiplier">Damage Multiplier (%):</label>
-    <input type="number" id="DmgMultiplier" value="500" step="1"><br><br>
+    <label for="LightconeBaseAtk">Lightcone Base ATK:</label>
+    <select id="LightconeBaseAtk" onchange="calculateDerivedVariables()">
+      <option value="635">Into the Unreachable Veil (635)</option>
+      <option value="635">Along the Passing Shore (635)</option>
+      <option value="649">In the Night (649)</option>
+    </select><br>
 
-    <label for="Dmg">Damage Bonus (%):</label>
-    <input type="number" id="Dmg" value="300" step="1"><br><br>
+    <h2>Manual Buffs</h2>
+    <label for="FlatAtk">Flat ATK:</label>
+    <input type="number" id="FlatAtk" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <label for="CritDmg">Critical Damage Bonus (%):</label>
-    <input type="number" id="CritDmg" value="300" step="1"><br><br>
+    <label for="AtkPercent">ATK%:</label>
+    <input type="number" id="AtkPercent" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <label for="EnemyLv">Enemy Level:</label>
-    <input type="number" id="EnemyLv" value="95" step="1"><br><br>
+    <label for="Dmg">Damage Multiplier (%):</label>
+    <input type="number" id="Dmg" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <label for="DefDown">Defense Down (%):</label>
-    <input type="number" id="DefDown" value="0" step="1"><br><br>
+    <label for="CritDmg">Crit Damage (%):</label>
+    <input type="number" id="CritDmg" value="50" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <label>Enemy Type:</label>
-    <input type="radio" name="EnemyType" value="100" checked> Weak (100%)<br>
-    <input type="radio" name="EnemyType" value="80"> Neutral (80%)<br>
-    <input type="radio" name="EnemyType" value="60"> Resist (60%)<br><br>
+    <label for="CritRate">Crit Rate (%):</label>
+    <input type="number" id="CritRate" value="5" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="EnemyDefMultiplier">Enemy Defense Multiplier:</label>
+    <input type="number" id="EnemyDefMultiplier" value="100" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="ResPen">Resistance Penetration (%):</label>
+    <input type="number" id="ResPen" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
     <label for="Vulnerability">Vulnerability (%):</label>
-    <input type="number" id="Vulnerability" value="50" step="1"><br><br>
+    <input type="number" id="Vulnerability" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <label for="ToughnessBroken">Toughness Broken:</label>
-    <input type="checkbox" id="ToughnessBroken"><br><br>
+    <label for="TrueDmg">True Damage (%):</label>
+    <input type="number" id="TrueDmg" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <label for="TrueDmg">True Damage Bonus (%):</label>
-    <input type="number" id="TrueDmg" value="30" step="1"><br><br>
+    <label for="DmgOriginalPercent">Damage % of Original:</label>
+    <input type="number" id="DmgOriginalPercent" value="100" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <h2>Toughness and Enemy Type</h2>
+    <label for="Toughness">Weakness Broken:</label>
+    <select id="Toughness" onchange="calculateDerivedVariables()">
+      <option value="100">True (100%)</option>
+      <option value="90">False (90%)</option>
+    </select><br>
+
+    <label for="EnemyType">Enemy Type:</label>
+    <select id="EnemyType" onchange="calculateDerivedVariables()">
+      <option value="100">Weak (100%)</option>
+      <option value="80">Not Weak (80%)</option>
+      <option value="60">Resist (60%)</option>
+    </select><br>
+
+    <label for="EnemyLevel">Enemy Level:</label>
+    <input type="number" id="EnemyLevel" value="1" step="1" onchange="calculateDerivedVariables()"><br>
 
     <button type="button" onclick="calculateDamage()">Calculate Damage</button>
   </form>
 
-  <p id="result"></p>
+  <div class="derived-values">
+    <h2>Derived Variables</h2>
+    <ul>
+      <li><strong>Derived Total ATK:</strong> <span id="DerivedTotalAtk">0</span></li>
+      <li><strong>Derived Total ATK%:</strong> <span id="DerivedTotalAtkPercent">0%</span></li>
+      <li><strong>Derived Total Damage Bonus:</strong> <span id="DerivedTotalDamageBonus">0%</span></li>
+      <li><strong>Derived Total Crit Damage:</strong> <span id="DerivedTotalCritDmg">0%</span></li>
+      <li><strong>Derived Total Crit Rate:</strong> <span id="DerivedTotalCritRate">0%</span></li>
+      <li><strong>Derived Enemy Defense Multiplier:</strong> <span id="DerivedEnemyDefMultiplier">0%</span></li>
+      <li><strong>Derived Resistance Penetration:</strong> <span id="DerivedResPen">0%</span></li>
+      <li><strong>Derived Vulnerability:</strong> <span id="DerivedVulnerability">0%</span></li>
+      <li><strong>Derived True Damage:</strong> <span id="DerivedTrueDmg">0%</span></li>
+    </ul>
+  </div>
 
-  <button onclick="goToSupport()">Go to Support Buffs</button>
+  <h2>Final Damage</h2>
+  <p id="FinalDamage">0</p>
 
   <script>
-    function calculateDamage() {
-      const Atk = parseFloat(document.getElementById('Atk').value);
-      const DmgMultiplier = parseFloat(document.getElementById('DmgMultiplier').value) / 100;
-      const Dmg = parseFloat(document.getElementById('Dmg').value) / 100;
-      const CritDmg = parseFloat(document.getElementById('CritDmg').value) / 100;
-      const EnemyDefenseMultiplier = 100 / ((parseFloat(document.getElementById('EnemyLv').value) + 20) * (1 - parseFloat(document.getElementById('DefDown').value) / 100) + 100);
-      const EnemyType = parseFloat(document.querySelector('input[name="EnemyType"]:checked').value) / 100;
-      const Vulnerability = 1 + parseFloat(document.getElementById('Vulnerability').value) / 100;
-      const Toughness = document.getElementById('ToughnessBroken').checked ? 1 : 0.9;
-      const TrueDmg = parseFloat(document.getElementById('TrueDmg').value) / 100;
+    function calculateDerivedVariables() {
+      // Derived Buffs from Support Characters
+      const supportTotalAtk = parseFloat(localStorage.getItem("DerivedTotalAtk")) || 0;
+      const supportTotalAtkPercent = parseFloat(localStorage.getItem("DerivedTotalAtkPercent")) || 0;
+      const supportTotalDmgBonus = parseFloat(localStorage.getItem("DerivedTotalDmgBonus")) || 0;
+      const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
 
-      // Retrieve support buffs
-      const totalDamageBonus = parseFloat(localStorage.getItem('totalDamageBonus')) || 0;
-      const totalResPen = parseFloat(localStorage.getItem('totalResPen')) || 0;
+      // Variables from Inputs
+      const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
+      const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
+      const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + supportTotalAtk;
+      const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + supportTotalAtkPercent) / 100;
+      const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
+      const critDmg = (parseFloat(document.getElementById("CritDmg").value) + supportTotalCritDmg) / 100;
 
-      // Calculate damage
-      const result = Atk
-        * DmgMultiplier
-        * (1 + Dmg + totalDamageBonus)
-        * (1 + CritDmg)
-        * EnemyDefenseMultiplier
-        * (EnemyType + totalResPen)
-        * (1 + Vulnerability)
-        * Toughness
-        * (1 + TrueDmg);
+      // Total ATK Calculation
+      const totalAtk = (characterBaseAtk + lightconeBaseAtk) + flatAtk + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
 
-      document.getElementById('result').textContent = `Final Damage: ${result.toFixed(2)}`;
+      // Update Derived Variables
+      document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
+      document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
     }
 
-    function goToSupport() {
-      window.location.href = "support_characters.html";
+    function calculateDamage() {
+      const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
+      const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDamageBonus").innerText) / 100;
+      const derivedCritDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
+
+      const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg);
+      document.getElementById("FinalDamage").innerText = damage.toFixed(2);
     }
   </script>
 </body>
