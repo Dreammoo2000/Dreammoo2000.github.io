@@ -17,6 +17,8 @@
     <button type="button" onclick="saveSupportBuffs()">Save Buffs</button>
   </form>
 
+  <button onclick="goToMain()">Go to Main Damage Calculator</button>
+
   <script>
     function saveSupportBuffs() {
       const totalDamageBonus = parseFloat(document.getElementById('SupportDamageBonus').value) / 100;
@@ -27,6 +29,10 @@
       localStorage.setItem('totalResPen', totalResPen);
 
       alert('Support buffs saved successfully!');
+    }
+
+    function goToMain() {
+      window.location.href = "index.html";
     }
   </script>
 </body>
