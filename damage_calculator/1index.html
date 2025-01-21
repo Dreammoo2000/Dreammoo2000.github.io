@@ -1,45 +1,53 @@
 ​
-    <button type="button" onclick="calculateDamage()">Calculate Damage</button>
-  </form>
-​
-  <p id="result"></p>
-​
-  <button onclick="goToSupport()">Go to Support Buffs</button>
-​
-  <script>
-    function calculateDamage() {
-      const Atk = parseFloat(document.getElementById('Atk').value);
-      const DmgMultiplier = parseFloat(document.getElementById('DmgMultiplier').value) / 100;
-      const Dmg = parseFloat(document.getElementById('Dmg').value) / 100;
-      const CritDmg = parseFloat(document.getElementById('CritDmg').value) / 100;
-      const EnemyDefenseMultiplier = 100 / ((parseFloat(document.getElementById('EnemyLv').value) + 20) * (1 - parseFloat(document.getElementById('DefDown').value) / 100) + 100);
-      const EnemyType = parseFloat(document.querySelector('input[name="EnemyType"]:checked').value) / 100;
-      const Vulnerability = 1 + parseFloat(document.getElementById('Vulnerability').value) / 100;
-      const Toughness = document.getElementById('ToughnessBroken').checked ? 1 : 0.9;
-      const TrueDmg = parseFloat(document.getElementById('TrueDmg').value) / 100;
-​
-      // Retrieve support buffs
-      const totalDamageBonus = parseFloat(localStorage.getItem('totalDamageBonus')) || 0;
-      const totalResPen = parseFloat(localStorage.getItem('totalResPen')) || 0;
-​
-      // Calculate damage
-      const result = Atk
-        * DmgMultiplier
-        * (1 + Dmg + totalDamageBonus)
-        * (1 + CritDmg)
-        * EnemyDefenseMultiplier
-        * (EnemyType + totalResPen)
-        * (1 + Vulnerability)
-        * Toughness
-        * (1 + TrueDmg);
-​
-      document.getElementById('result').textContent = `Final Damage: ${result.toFixed(2)}`;
-    }
-​
-    function goToSupport() {
-      window.location.href = "support_characters.html";
-    }
-  </script>
-</body>
-</html>
-​
+<IDOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Character Damage Calculator</title>
+<style>
+body {
+font-family:Arial, sans-serif
+margin: 20px;
+h1
+text-align: center;
+.section {
+margin-bottom: 20px;
+label {
+font-weight: bold;
+.output {
+margin-top: 10px;
+font-size: 1.2em;
+color：#333;
+</style></head>
+<body>
+<h1>Main Character Damage Calculator</h1
+Character and Lightcone Base ATK Section<div class="section">
+<label for="characterSelect">Select a Character:</label>
+<select id="characterSelect">
+<option value="" disabled selected>Select...</option>
+<option value="699">Acheron</option>
+<option value="679">The Herta</option>
+<option value="640">Seele</option>
+</select>
+<div class="output" id="characterBaseAtkOutput">Character Base ATK: </div>
+</div>
+<div class="section">
+<label for="lightconeSelect">Select a Lightcone:</label>
+<select id="lightconeSelect">
+<option value="" disabled selected>Select...</option><option value="635">Into the Unreachable Veil</option><option value="635">Along the Passing Shore</option><option value="582">In the Night</option>
+</select>
+<div class="output" id="lightconeBaseAtkOutput">Lightcone Base ATK: </div>
+</div>
+<!-- Base ATK Section -->
+<div class="section">
+<div class="output" id="baseAtkOutput">Base ATK: </div></div>
+<!-- Attack (Atk) Section
+<div class="section">
+-->
+<label for="rawAtk">Raw ATK:</label>
+kinput type="number" id="rawAtk" value="0" step="1"><br><hr>
+<label for="atkPercent">ATK% Bonus:</label>
+<input type="number" id="atkPercent" value="0" step="1"><br><br>
+<div class="output" id="atkOutput">ATK: </div>
+</div>
