@@ -45,6 +45,8 @@
 
   <p id="result"></p>
 
+  <button onclick="goToSupport()">Go to Support Buffs</button>
+
   <script>
     function calculateDamage() {
       const Atk = parseFloat(document.getElementById('Atk').value);
@@ -53,7 +55,7 @@
       const CritDmg = parseFloat(document.getElementById('CritDmg').value) / 100;
       const EnemyDefenseMultiplier = 100 / ((parseFloat(document.getElementById('EnemyLv').value) + 20) * (1 - parseFloat(document.getElementById('DefDown').value) / 100) + 100);
       const EnemyType = parseFloat(document.querySelector('input[name="EnemyType"]:checked').value) / 100;
-      const Vulnerability = parseFloat(document.getElementById('Vulnerability').value) / 100;
+      const Vulnerability = 1 + parseFloat(document.getElementById('Vulnerability').value) / 100;
       const Toughness = document.getElementById('ToughnessBroken').checked ? 1 : 0.9;
       const TrueDmg = parseFloat(document.getElementById('TrueDmg').value) / 100;
 
@@ -68,13 +70,16 @@
         * (1 + CritDmg)
         * EnemyDefenseMultiplier
         * (EnemyType + totalResPen)
-        * Vulnerability
+        * (1+Vulnerability)
         * Toughness
         * (1 + TrueDmg);
 
       document.getElementById('result').textContent = `Final Damage: ${result.toFixed(2)}`;
     }
+
+    function goToSupport() {
+      window.location.href = "support_characters.html";
+    }
   </script>
 </body>
 </html>
-
