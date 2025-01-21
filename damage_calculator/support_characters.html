@@ -8,11 +8,37 @@
 <body>
   <h1>Support Characters Buffs</h1>
   <form>
+    <!-- Support Buffs Section -->
     <label for="SupportDamageBonus">Support Damage Bonus (%):</label>
     <input type="number" id="SupportDamageBonus" value="25" step="1"><br><br>
 
     <label for="SupportResPen">Support Resistance Penetration (%):</label>
     <input type="number" id="SupportResPen" value="25" step="1"><br><br>
+
+    <!-- Sparkle Character Section -->
+    <h2>Sparkle</h2>
+    <label for="SparkleActive">Is Sparkle Active?</label>
+    <input type="checkbox" id="SparkleActive" onclick="toggleSparkleInputs()"><br><br>
+
+    <div id="SparkleInputs" style="display: none;">
+      <label for="SparkleCritDmg">Sparkle's Critical Damage (%):</label>
+      <input type="number" id="SparkleCritDmg" value="0" step="1"><br><br>
+
+      <label for="CharacterBaseAtk">Character Base Attack:</label>
+      <input type="number" id="CharacterBaseAtk" value="1000" step="1"><br><br>
+
+      <label for="LightconeBaseAtk">Lightcone Base Attack:</label>
+      <input type="number" id="LightconeBaseAtk" value="500" step="1"><br><br>
+
+      <label for="FlatAtk">Flat Attack Bonus:</label>
+      <input type="number" id="FlatAtk" value="200" step="1"><br><br>
+
+      <label for="AtkPercent">Attack Bonus Percentage (%):</label>
+      <input type="number" id="AtkPercent" value="20" step="1"><br><br>
+
+      <label for="QuantumAllies">Number of Quantum Allies:</label>
+      <input type="number" id="QuantumAllies" value="1" min="1" max="3" step="1"><br><br>
+    </div>
 
     <button type="button" onclick="saveSupportBuffs()">Save Buffs</button>
   </form>
@@ -20,13 +46,46 @@
   <button onclick="goToMain()">Go to Main Damage Calculator</button>
 
   <script>
+    function toggleSparkleInputs() {
+      const sparkleInputs = document.getElementById('SparkleInputs');
+      sparkleInputs.style.display = document.getElementById('SparkleActive').checked ? 'block' : 'none';
+    }
+
     function saveSupportBuffs() {
+      // Support Damage Buffs
       const totalDamageBonus = parseFloat(document.getElementById('SupportDamageBonus').value) / 100;
       const totalResPen = parseFloat(document.getElementById('SupportResPen').value) / 100;
 
+      // Sparkle Buffs
+      let sparkleCritDmgBuff = 0;
+      let sparkleDmgBoost = 0;
+      let sparkleAtk = 0;
+
+      if (document.getElementById('SparkleActive').checked) {
+        const sparkleCritDmg = parseFloat(document.getElementById('SparkleCritDmg').value) / 100;
+        const baseAtk = parseFloat(document.getElementById('CharacterBaseAtk').value) + parseFloat(document.getElementById('LightconeBaseAtk').value);
+        const flatAtk = parseFloat(document.getElementById('FlatAtk').value);
+        const atkPercent = parseFloat(document.getElementById('AtkPercent').value) / 100;
+
+        // Calculate Sparkle's Attack
+        sparkleAtk = baseAtk + flatAtk + baseAtk * atkPercent;
+
+        // Quantum Allies Bonus
+        const quantumAllies = parseInt(document.getElementById('QuantumAllies').value);
+        const quantumAtkBoost = quantumAllies === 1 ? 0.05 : quantumAllies === 2 ? 0.15 : 0.30;
+
+        sparkleAtk += baseAtk * quantumAtkBoost;
+
+        // Buffs
+        sparkleCritDmgBuff = 0.24 * sparkleCritDmg + 0.45;
+        sparkleDmgBoost = 0.48;
+      }
+
       // Save to localStorage
-      localStorage.setItem('totalDamageBonus', totalDamageBonus);
+      localStorage.setItem('totalDamageBonus', totalDamageBonus + sparkleDmgBoost);
       localStorage.setItem('totalResPen', totalResPen);
+      localStorage.setItem('sparkleAtk', sparkleAtk);
+      localStorage.setItem('sparkleCritDmgBuff', sparkleCritDmgBuff);
 
       alert('Support buffs saved successfully!');
     }
