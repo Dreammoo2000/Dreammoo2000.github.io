@@ -1,53 +1,163 @@
-​
-<IDOCTYPE html>
+​<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Main Character Damage Calculator</title>
-<style>
-body {
-font-family:Arial, sans-serif
-margin: 20px;
-h1
-text-align: center;
-.section {
-margin-bottom: 20px;
-label {
-font-weight: bold;
-.output {
-margin-top: 10px;
-font-size: 1.2em;
-color：#333;
-</style></head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Character Damage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .output {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+
 <body>
-<h1>Main Character Damage Calculator</h1
-Character and Lightcone Base ATK Section<div class="section">
-<label for="characterSelect">Select a Character:</label>
-<select id="characterSelect">
-<option value="" disabled selected>Select...</option>
-<option value="699">Acheron</option>
-<option value="679">The Herta</option>
-<option value="640">Seele</option>
-</select>
-<div class="output" id="characterBaseAtkOutput">Character Base ATK: </div>
-</div>
-<div class="section">
-<label for="lightconeSelect">Select a Lightcone:</label>
-<select id="lightconeSelect">
-<option value="" disabled selected>Select...</option><option value="635">Into the Unreachable Veil</option><option value="635">Along the Passing Shore</option><option value="582">In the Night</option>
-</select>
-<div class="output" id="lightconeBaseAtkOutput">Lightcone Base ATK: </div>
-</div>
-<!-- Base ATK Section -->
-<div class="section">
-<div class="output" id="baseAtkOutput">Base ATK: </div></div>
-<!-- Attack (Atk) Section
-<div class="section">
--->
-<label for="rawAtk">Raw ATK:</label>
-kinput type="number" id="rawAtk" value="0" step="1"><br><hr>
-<label for="atkPercent">ATK% Bonus:</label>
-<input type="number" id="atkPercent" value="0" step="1"><br><br>
-<div class="output" id="atkOutput">ATK: </div>
-</div>
+    <h1>Main Character Damage Calculator</h1>
+
+    <!-- Character and Lightcone Base ATK Section -->
+    <div class="section">
+        <label for="characterSelect">Select a Character:</label>
+        <select id="characterSelect">
+            <option value="" disabled selected>Select...</option>
+            <option value="699">Acheron</option>
+            <option value="679">The Herta</option>
+            <option value="640">Seele</option>
+        </select>
+        <div class="output" id="characterBaseAtkOutput">Character Base ATK: </div>
+    </div>
+
+    <div class="section">
+        <label for="lightconeSelect">Select a Lightcone:</label>
+        <select id="lightconeSelect">
+            <option value="" disabled selected>Select...</option>
+            <option value="635">Into the Unreachable Veil</option>
+            <option value="635">Along the Passing Shore</option>
+            <option value="582">In the Night</option>
+        </select>
+        <div class="output" id="lightconeBaseAtkOutput">Lightcone Base ATK: </div>
+    </div>
+
+    <!-- Base ATK Section -->
+    <div class="section">
+        <div class="output" id="baseAtkOutput">Base ATK: </div>
+    </div>
+
+    <!-- Attack (Atk) Section -->
+    <div class="section">
+        <label for="rawAtk">Raw ATK:</label>
+        <input type="number" id="rawAtk" value="0" step="1"><br><br>
+
+        <label for="atkPercent">ATK% Bonus:</label>
+        <input type="number" id="atkPercent" value="0" step="1"><br><br>
+
+        <div class="output" id="atkOutput">ATK: </div>
+    </div>
+
+    <!-- Manually Inputted ATK Section -->
+    <div class="section">
+        <label for="manualAtk">Manual ATK (Input):</label>
+        <input type="number" id="manualAtk" value="0" step="1">
+    </div>
+
+    <!-- Damage Result Section -->
+    <div class="section">
+        <label for="dmgMultiplier">Damage Multiplier (%):</label>
+        <input type="number" id="dmgMultiplier" value="100" step="1"><br><br>
+
+        <label for="dmgBonus">Damage Bonus (%):</label>
+        <input type="number" id="dmgBonus" value="0" step="1"><br><br>
+
+        <label for="critDmgBonus">Critical Damage Bonus (%):</label>
+        <input type="number" id="critDmgBonus" value="0" step="1"><br><br>
+
+        <div class="output" id="damageResult">Damage Result: </div>
+    </div>
+
+    <script>
+        const characterSelect = document.getElementById("characterSelect");
+        const lightconeSelect = document.getElementById("lightconeSelect");
+        const characterBaseAtkOutput = document.getElementById("characterBaseAtkOutput");
+        const lightconeBaseAtkOutput = document.getElementById("lightconeBaseAtkOutput");
+        const baseAtkOutput = document.getElementById("baseAtkOutput");
+        const rawAtkInput = document.getElementById("rawAtk");
+        const atkPercentInput = document.getElementById("atkPercent");
+        const atkOutput = document.getElementById("atkOutput");
+        const manualAtkInput = document.getElementById("manualAtk");
+        const dmgMultiplierInput = document.getElementById("dmgMultiplier");
+        const dmgBonusInput = document.getElementById("dmgBonus");
+        const critDmgBonusInput = document.getElementById("critDmgBonus");
+        const damageResultOutput = document.getElementById("damageResult");
+
+        let characterBaseAtk = 0;
+        let lightconeBaseAtk = 0;
+
+        characterSelect.addEventListener("change", () => {
+            characterBaseAtk = parseInt(characterSelect.value) || 0;
+            characterBaseAtkOutput.textContent = `Character Base ATK: ${characterBaseAtk}`;
+            updateBaseAtk();
+        });
+
+        lightconeSelect.addEventListener("change", () => {
+            lightconeBaseAtk = parseInt(lightconeSelect.value) || 0;
+            lightconeBaseAtkOutput.textContent = `Lightcone Base ATK: ${lightconeBaseAtk}`;
+            updateBaseAtk();
+        });
+
+        rawAtkInput.addEventListener("input", updateAtk);
+        atkPercentInput.addEventListener("input", updateAtk);
+        manualAtkInput.addEventListener("input", calculateDamage);
+        dmgMultiplierInput.addEventListener("input", calculateDamage);
+        dmgBonusInput.addEventListener("input", calculateDamage);
+        critDmgBonusInput.addEventListener("input", calculateDamage);
+
+        function updateBaseAtk() {
+            const baseAtk = characterBaseAtk + lightconeBaseAtk;
+            baseAtkOutput.textContent = `Base ATK: ${baseAtk}`;
+            updateAtk();
+        }
+
+        function updateAtk() {
+            const baseAtk = characterBaseAtk + lightconeBaseAtk;
+            const rawAtk = parseFloat(rawAtkInput.value) || 0;
+            const atkPercent = parseFloat(atkPercentInput.value) / 100 || 0;
+            const totalAtk = baseAtk + rawAtk + (baseAtk * atkPercent);
+            atkOutput.textContent = `ATK: ${totalAtk.toFixed(2)}`;
+            calculateDamage();
+        }
+
+        function calculateDamage() {
+            const baseAtk = characterBaseAtk + lightconeBaseAtk;
+            const atkPercent = parseFloat(atkPercentInput.value) / 100 || 0;
+            const rawAtk = parseFloat(rawAtkInput.value) || 0;
+            const atkFromBase = baseAtk + rawAtk + (baseAtk * atkPercent);
+            const manualAtk = parseFloat(manualAtkInput.value) || 0;
+
+            const chosenAtk = Math.max(atkFromBase, manualAtk);
+
+            const dmgMultiplier = parseFloat(dmgMultiplierInput.value) / 100 || 0;
+            const dmgBonus = parseFloat(dmgBonusInput.value) / 100 || 0;
+            const critDmgBonus = parseFloat(critDmgBonusInput.value) / 100 || 0;
+
+            const damage = chosenAtk * (1 + dmgBonus + critDmgBonus) * dmgMultiplier;
+            damageResultOutput.textContent = `Damage Result: ${damage.toFixed(2)}`;
+        }
+    </script>
+</body>
+
+</html>
