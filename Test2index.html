@@ -192,7 +192,7 @@
       // Update Derived Variables
       document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
       document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
-      document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTotalDamageBonus").innerText = `${((dmgBonus + supportTotalDmgBonus) * 100).toFixed(2)}%`;
       document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
       document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
       document.getElementById("DerivedTotalCritRate").innerText = `${(critRate * 100).toFixed(2)}%`;
