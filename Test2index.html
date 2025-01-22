@@ -336,14 +336,18 @@
     document.getElementById('derived-total-atk').textContent = totalAtkBuff.toFixed(2);
 
     // Save Derived Buffs for Index Page
-    localStorage.setItem('derivedTotalCritDmg', totalCritDmgBuff);
-    localStorage.setItem('derivedTotalAtk', totalAtkBuff);
-    localStorage.setItem('derivedTotalDmgBonus', totalDmgBonus); 
-    localStorage.setItem('derivedTotalCritRate', totalCritRateBuff);
-    localStorage.setItem('derivedTotalVulnerability', totalVulnerabilityBuff);
-    localStorage.setItem('derivedTotalResPen', totalResPenBuff);
-    localStorage.setItem('derivedTotalDefDown', totalDefDownBuff);
-    localStorage.setItem('derivedTotalTrueDmg', totalTrueDmgBuff);
+    const buffs = {
+  critDmg: totalCritDmgBuff,
+  atk: totalAtkBuff,
+  dmgBonus: totalDmgBonus,
+  critRate: totalCritRateBuff,
+  vulnerability: totalVulnerabilityBuff,
+  resPen: totalResPenBuff,
+  defDown: totalDefDownBuff,
+  trueDmg: totalTrueDmgBuff,
+};
+localStorage.setItem('supportBuffs', JSON.stringify(buffs));
+
 // Store new DMG bonus
 }
 
