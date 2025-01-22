@@ -132,6 +132,8 @@
       const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
       function calculateDerivedVariables() {
     // Fetch derived buffs from localStorage
+     const supportTotalAtk = parseFloat(localStorage.getItem("derivedTotalAtk")) || 0;
+     const supportTotalCritDmg = parseFloat(localStorage.getItem("derivedTotalCritDmg")) || 0;
      const supportTotalDmgBonus = parseFloat(localStorage.getItem("derivedTotalDmgBonus")) || 0;
      const supportTotalCritRate = parseFloat(localStorage.getItem("derivedTotalCritRate")) || 0;
      const supportTotalVulnerability = parseFloat(localStorage.getItem("derivedTotalVulnerability")) || 0;
