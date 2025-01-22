@@ -132,12 +132,12 @@
       const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
       function calculateDerivedVariables() {
     // Fetch derived buffs from localStorage
-    const supportTotalDmgBonus = parseFloat(localStorage.getItem("derivedTotalDmgBonus")) || 0;
-    const supportTotalCritRate = parseFloat(localStorage.getItem("derivedTotalCritRate")) || 0;
-    const supportTotalVulnerability = parseFloat(localStorage.getItem("derivedTotalVulnerability")) || 0;
-    const supportTotalResPen = parseFloat(localStorage.getItem("derivedTotalResPen")) || 0;
-    const supportTotalDefDown = parseFloat(localStorage.getItem("derivedTotalDefDown")) || 0;
-    const supportTotalTrueDmg = parseFloat(localStorage.getItem("derivedTotalTrueDmg")) || 0;
+     const supportTotalDmgBonus = parseFloat(localStorage.getItem("derivedTotalDmgBonus")) || 0;
+     const supportTotalCritRate = parseFloat(localStorage.getItem("derivedTotalCritRate")) || 0;
+     const supportTotalVulnerability = parseFloat(localStorage.getItem("derivedTotalVulnerability")) || 0;
+     const supportTotalResPen = parseFloat(localStorage.getItem("derivedTotalResPen")) || 0;
+     const supportTotalDefDown = parseFloat(localStorage.getItem("derivedTotalDefDown")) || 0;
+     const supportTotalTrueDmg = parseFloat(localStorage.getItem("derivedTotalTrueDmg")) || 0;
 
     // Add derived buffs to existing variables
     const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
