@@ -190,6 +190,11 @@
       document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
       document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
       document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTotalCritRate").innerText = `${(critRate * 100).toFixed(2)}%`;
+      document.getElementById("DerivedEnemyDefMultiplier").innerText = `${(enemyDefenseMultiplier * 100).toFixed(2)}%`;
+      document.getElementById("DerivedResPen").innerText = `${(resPen * 100).toFixed(2)}%`;
+      document.getElementById("DerivedVulnerability").innerText = `${(vulnerability * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTrueDmg").innerText = `${(trueDmg * 100).toFixed(2)}%`;
     }
 
     function calculateDamage() {
