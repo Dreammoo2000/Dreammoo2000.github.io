@@ -147,7 +147,9 @@
     // Add derived buffs to existing variables
     const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
     const critRate = (parseFloat(document.getElementById("CritRate").value) + supportTotalCritRate) / 100;
-
+    const resPen = (parseFloat(document.getElementById("ResPen").value) + supportTotalResPen) / 100;
+    const vulnerability = (parseFloat(document.getElementById("Vulnerability").value) + supportTotalVulnerability) / 100;
+    const trueDmg = (parseFloat(document.getElementById("TrueDmg").value) + supportTotalTrueDmg) / 100;
     // Adjust Derived Variables with Buffs
     const totalAtk = (characterBaseAtk + lightconeBaseAtk + flatAtk) + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
     const totalCritDmg = critDmg + supportTotalCritDmg / 100;
