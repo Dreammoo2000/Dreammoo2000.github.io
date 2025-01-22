@@ -177,13 +177,23 @@
     }
 
     function calculateDamage() {
-      const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
-      const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDamageBonus").innerText) / 100;
-      const derivedCritDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
+    const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
+    const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDamageBonus").innerText) / 100;
+    const derivedCritDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
+    const derivedCritRate = parseFloat(document.getElementById("DerivedTotalCritRate").innerText) / 100;
 
-      const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg);
-      document.getElementById("FinalDamage").innerText = damage.toFixed(2);
-    }
+    const derivedVulnerability = parseFloat(localStorage.getItem("derivedTotalVulnerability")) || 0;
+    const derivedResPen = parseFloat(localStorage.getItem("derivedTotalResPen")) || 0;
+    const derivedDefDown = parseFloat(localStorage.getItem("derivedTotalDefDown")) || 0;
+    const derivedTrueDmg = parseFloat(localStorage.getItem("derivedTotalTrueDmg")) || 0;
+
+    // Calculate final damage
+    const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg) * (1 + derivedVulnerability / 100) * (1 + derivedResPen / 100) * (1 + derivedDefDown / 100) * (1 + derivedTrueDmg / 100);
+
+    document.getElementById("FinalDamage").innerText = damage.toFixed(2);
+    console.log("Final Damage Calculated:", damage);
+}
+
   </script>
 </body>
 </html>
