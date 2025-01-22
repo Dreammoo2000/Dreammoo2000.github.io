@@ -180,19 +180,25 @@
     const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
     const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDamageBonus").innerText) / 100;
     const derivedCritDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
-    const derivedCritRate = parseFloat(document.getElementById("DerivedTotalCritRate").innerText) / 100;
+    const critRate = parseFloat(document.getElementById("CritRate").value) / 100;
+    const trueDmg = parseFloat(document.getElementById("TrueDmg").value) / 100;
+    const dmgOriginalPercent = parseFloat(document.getElementById("DmgOriginalPercent").value) / 100;
+    const toughness = parseFloat(document.getElementById("Toughness").value) / 100;
+    const enemyType = parseFloat(document.getElementById("EnemyType").value) / 100;
+    const resPen = parseFloat(document.getElementById("ResPen").value) / 100;
+    const vulnerability = parseFloat(document.getElementById("Vulnerability").value) / 100;
 
-    const derivedVulnerability = parseFloat(localStorage.getItem("derivedTotalVulnerability")) || 0;
-    const derivedResPen = parseFloat(localStorage.getItem("derivedTotalResPen")) || 0;
-    const derivedDefDown = parseFloat(localStorage.getItem("derivedTotalDefDown")) || 0;
-    const derivedTrueDmg = parseFloat(localStorage.getItem("derivedTotalTrueDmg")) || 0;
+    // Enemy Defense Multiplier
+    const enemyLevel = parseFloat(document.getElementById("EnemyLevel").value);
+    const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - resPen) + 100);
 
-    // Calculate final damage
-    const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg) * (1 + derivedVulnerability / 100) * (1 + derivedResPen / 100) * (1 + derivedDefDown / 100) * (1 + derivedTrueDmg / 100);
+    // Final Damage Formula
+    const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg) * enemyDefenseMultiplier *
+        (enemyType + resPen) * vulnerability * toughness * dmgOriginalPercent * critRate * (1 + trueDmg);
 
     document.getElementById("FinalDamage").innerText = damage.toFixed(2);
-    console.log("Final Damage Calculated:", damage);
 }
+
 
   </script>
 </body>
