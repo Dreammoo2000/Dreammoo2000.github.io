@@ -199,7 +199,7 @@
     const vulnerability = parseFloat(document.getElementById("Vulnerability").value) / 100;
     // Enemy Defense Multiplier
     const enemyLevel = parseFloat(document.getElementById("EnemyLevel").value);
-    const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - resPen) + 100);
+    const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - defDown) + 100);
 
     // Final Damage Formula
     const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg) * enemyDefenseMultiplier *
