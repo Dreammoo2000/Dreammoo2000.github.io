@@ -211,7 +211,7 @@
 
     // Final Damage Formula
     const damage = derivedTotalAtk * (1 + derivedDmgBonus) * critMultiplier * enemyDefenseMultiplier *
-                   (enemyType + resPen) * vulnerability * toughness * dmgOriginalPercent * (1 + trueDmg);
+                   (enemyType + resPen) * (1 + vulnerability) * toughness * dmgOriginalPercent * (1 + trueDmg);
 
     document.getElementById("FinalDamage").innerText = damage.toFixed(2);
 }
