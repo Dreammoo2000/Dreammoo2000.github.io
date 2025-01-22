@@ -180,7 +180,10 @@
       const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + supportTotalAtkPercent) / 100;
       const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
       const critDmg = (parseFloat(document.getElementById("CritDmg").value) + supportTotalCritDmg) / 100;
-
+      const critRate = (parseFloat(document.getElementById("CritRate").value) + supportTotalCritRate) / 100;
+      const resPen = (parseFloat(document.getElementById("ResPen").value) + supportTotalResPen) / 100;
+      const vulnerbility = (parseFloat(document.getElementById("Vulnerbility").value) + supportTotalVulnerbility) / 100;
+      const trueDmg = parseFloat(document.getElementById("TrueDmg").value) + supportTotalTrueDmg / 100;
       // Total ATK Calculation
       const totalAtk = (characterBaseAtk + lightconeBaseAtk) + flatAtk + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
 
