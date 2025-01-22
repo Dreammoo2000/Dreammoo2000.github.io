@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Damage Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select {
+      margin-bottom: 10px;
+    }
+    .derived-values {
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-top: 20px;
+    }
+    .derived-values ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .derived-values li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Damage Calculator</h1>
+  <form>
+    <h2>Character and Lightcone Selection</h2>
+    <label for="CharacterBaseAtk">Character Base ATK:</label>
+    <select id="CharacterBaseAtk" onchange="calculateDerivedVariables()">
+      <option value="699">Acheron (699)</option>
+      <option value="679">The Herta (679)</option>
+      <option value="649">Seele (649)</option>
+    </select><br>
+
+    <label for="LightconeBaseAtk">Lightcone Base ATK:</label>
+    <select id="LightconeBaseAtk" onchange="calculateDerivedVariables()">
+      <option value="635">Into the Unreachable Veil (635)</option>
+      <option value="635">Along the Passing Shore (635)</option>
+      <option value="649">In the Night (649)</option>
+    </select><br>
+
+    <h2>Manual Buffs</h2>
+    <label for="FlatAtk">Flat ATK:</label>
+    <input type="number" id="FlatAtk" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="AtkPercent">ATK%:</label>
+    <input type="number" id="AtkPercent" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="Dmg">Damage Multiplier (%):</label>
+    <input type="number" id="Dmg" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="CritDmg">Crit Damage (%):</label>
+    <input type="number" id="CritDmg" value="50" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="CritRate">Crit Rate (%):</label>
+    <input type="number" id="CritRate" value="5" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="EnemyDefMultiplier">Enemy Defense Multiplier:</label>
+    <input type="number" id="EnemyDefMultiplier" value="100" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="ResPen">Resistance Penetration (%):</label>
+    <input type="number" id="ResPen" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="Vulnerability">Vulnerability (%):</label>
+    <input type="number" id="Vulnerability" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="TrueDmg">True Damage (%):</label>
+    <input type="number" id="TrueDmg" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <label for="DmgOriginalPercent">Damage % of Original:</label>
+    <input type="number" id="DmgOriginalPercent" value="100" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <h2>Toughness and Enemy Type</h2>
+    <label for="Toughness">Weakness Broken:</label>
+    <select id="Toughness" onchange="calculateDerivedVariables()">
+      <option value="100">True (100%)</option>
+      <option value="90">False (90%)</option>
+    </select><br>
+
+    <label for="EnemyType">Enemy Type:</label>
+    <select id="EnemyType" onchange="calculateDerivedVariables()">
+      <option value="100">Weak (100%)</option>
+      <option value="80">Not Weak (80%)</option>
+      <option value="60">Resist (60%)</option>
+    </select><br>
+
+    <label for="EnemyLevel">Enemy Level:</label>
+    <input type="number" id="EnemyLevel" value="1" step="1" onchange="calculateDerivedVariables()"><br>
+
+    <button type="button" onclick="calculateDamage()">Calculate Damage</button>
+  </form>
+
+  <div class="derived-values">
+    <h2>Derived Variables</h2>
+    <ul>
+      <li><strong>Derived Total ATK:</strong> <span id="DerivedTotalAtk">0</span></li>
+      <li><strong>Derived Total ATK%:</strong> <span id="DerivedTotalAtkPercent">0%</span></li>
+      <li><strong>Derived Total Damage Bonus:</strong> <span id="DerivedTotalDamageBonus">0%</span></li>
+      <li><strong>Derived Total Crit Damage:</strong> <span id="DerivedTotalCritDmg">0%</span></li>
+      <li><strong>Derived Total Crit Rate:</strong> <span id="DerivedTotalCritRate">0%</span></li>
+      <li><strong>Derived Enemy Defense Multiplier:</strong> <span id="DerivedEnemyDefMultiplier">0%</span></li>
+      <li><strong>Derived Resistance Penetration:</strong> <span id="DerivedResPen">0%</span></li>
+      <li><strong>Derived Vulnerability:</strong> <span id="DerivedVulnerability">0%</span></li>
+      <li><strong>Derived True Damage:</strong> <span id="DerivedTrueDmg">0%</span></li>
+    </ul>
+  </div>
+
+  <h2>Final Damage</h2>
+  <p id="FinalDamage">0</p>
+
+  <script>
+    function calculateDerivedVariables() {
+      // Derived Buffs from Support Characters
+      const supportTotalAtk = parseFloat(localStorage.getItem("DerivedTotalAtk")) || 0;
+      const supportTotalAtkPercent = parseFloat(localStorage.getItem("DerivedTotalAtkPercent")) || 0;
+      const supportTotalDmgBonus = parseFloat(localStorage.getItem("DerivedTotalDmgBonus")) || 0;
+      const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
+
+      // Variables from Inputs
+      const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
+      const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
+      const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + supportTotalAtk;
+      const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + supportTotalAtkPercent) / 100;
+      const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
+      const critDmg = (parseFloat(document.getElementById("CritDmg").value) + supportTotalCritDmg) / 100;
+
+      // Total ATK Calculation
+      const totalAtk = (characterBaseAtk + lightconeBaseAtk) + flatAtk + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
+
+      // Update Derived Variables
+      document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
+      document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
+      document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
+    }
+
+    function calculateDamage() {
+      const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
+      const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDamageBonus").innerText) / 100;
+      const derivedCritDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
+
+      const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg);
+      document.getElementById("FinalDamage").innerText = damage.toFixed(2);
+    }
+  </script>
+</body>
+</html>
+
+#The code above is index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Characters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .derived-section {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Support Characters</h1>
+        <form id="support-form">
+            <!-- Sparkle Buff -->
+            <h2>Sparkle</h2>
+            <label for="sparkle-active">Is Sparkle Active?</label>
+            <select id="sparkle-active">
+                <option value="true">True</option>
+                <option value="false" selected>False</option>
+            </select>
+
+            <label for="sparkle-crit-dmg">Sparkle's Crit Damage (%):</label>
+            <input type="number" id="sparkle-crit-dmg" value="0">
+
+            <button type="button" class="btn" onclick="calculateSupportBuffs()">Calculate Support Buffs</button>
+        </form>
+
+        <div class="derived-section">
+            <h2>Derived Buffs</h2>
+            <p><strong>Derived Total Crit Damage Buff:</strong> <span id="derived-total-crit-dmg">0</span></p>
+            <p><strong>Derived Total Atk Buff (%):</strong> <span id="derived-total-atk">0</span></p>
+        </div>
+
+        <a href="index.html" class="btn">Return to Main Calculator</a>
+    </div>
+
+    <script>
+        function calculateSupportBuffs() {
+            // Get Sparkle inputs
+            const sparkleActive = document.getElementById('sparkle-active').value === 'true';
+            const sparkleCritDmg = parseFloat(document.getElementById('sparkle-crit-dmg').value) || 0;
+
+            // Initialize derived buffs
+            let totalCritDmgBuff = 0;
+            let totalAtkBuff = 0;
+
+            if (sparkleActive) {
+                // Sparkle's Crit Damage Buff: 24% of Sparkle's Crit Damage + 45%
+                totalCritDmgBuff += (0.24 * sparkleCritDmg) + 45;
+
+                // Sparkle's Atk Buff: +15% Atk
+                totalAtkBuff += 15;
+            }
+
+            // Update Derived Buffs section
+            document.getElementById('derived-total-crit-dmg').textContent = totalCritDmgBuff.toFixed(2);
+            document.getElementById('derived-total-atk').textContent = totalAtkBuff.toFixed(2);
+
+            console.log("Support Buffs Calculated: ", { totalCritDmgBuff, totalAtkBuff });
+
+            // Store Derived Buffs for Index Page
+            localStorage.setItem('derivedTotalCritDmg', totalCritDmgBuff);
+            localStorage.setItem('derivedTotalAtk', totalAtkBuff);
+        }
+    </script>
+</body>
+</html>
+
+#The code above is support_characters.html
