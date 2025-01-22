@@ -235,32 +235,36 @@
 
     <script>
         function calculateSupportBuffs() {
-            // Get Sparkle inputs
-            const sparkleActive = document.getElementById('sparkle-active').value === 'true';
-            const sparkleCritDmg = parseFloat(document.getElementById('sparkle-crit-dmg').value) || 0;
+    // Get Sparkle inputs
+    const sparkleActive = document.getElementById('sparkle-active').value === 'true';
+    const sparkleCritDmg = parseFloat(document.getElementById('sparkle-crit-dmg').value) || 0;
 
-            // Initialize derived buffs
-            let totalCritDmgBuff = 0;
-            let totalAtkBuff = 0;
+    // Initialize derived buffs
+    let totalCritDmgBuff = 0;
+    let totalAtkBuff = 0;
+    let totalDmgBonus = 0; // New DMG bonus variable
 
-            if (sparkleActive) {
-                // Sparkle's Crit Damage Buff: 24% of Sparkle's Crit Damage + 45%
-                totalCritDmgBuff += (0.24 * sparkleCritDmg) + 45;
+    if (sparkleActive) {
+        // Sparkle's Crit Damage Buff: 24% of Sparkle's Crit Damage + 45%
+        totalCritDmgBuff += (0.24 * sparkleCritDmg) + 45;
 
-                // Sparkle's Atk Buff: +15% Atk
-                totalAtkBuff += 15;
-            }
+        // Sparkle's Atk Buff: +15% Atk
+        totalAtkBuff += 15;
 
-            // Update Derived Buffs section
-            document.getElementById('derived-total-crit-dmg').textContent = totalCritDmgBuff.toFixed(2);
-            document.getElementById('derived-total-atk').textContent = totalAtkBuff.toFixed(2);
+        // Sparkle's DMG Bonus Buff: +48%
+        totalDmgBonus += 48; // Add the fixed DMG bonus
+    }
 
-            console.log("Support Buffs Calculated: ", { totalCritDmgBuff, totalAtkBuff });
+    // Update Derived Buffs section
+    document.getElementById('derived-total-crit-dmg').textContent = totalCritDmgBuff.toFixed(2);
+    document.getElementById('derived-total-atk').textContent = totalAtkBuff.toFixed(2);
 
-            // Store Derived Buffs for Index Page
-            localStorage.setItem('derivedTotalCritDmg', totalCritDmgBuff);
-            localStorage.setItem('derivedTotalAtk', totalAtkBuff);
-        }
+    // Save Derived Buffs for Index Page
+    localStorage.setItem('derivedTotalCritDmg', totalCritDmgBuff);
+    localStorage.setItem('derivedTotalAtk', totalAtkBuff);
+    localStorage.setItem('derivedTotalDmgBonus', totalDmgBonus); // Store new DMG bonus
+}
+
     </script>
 </body>
 </html>
