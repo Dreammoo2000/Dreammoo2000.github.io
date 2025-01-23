@@ -126,6 +126,24 @@
 
   <script>
     function calculateDerivedVariables() {
+    
+    const buffTotalAtk = parseFloat(localStorage.getItem('DerivedBuffTotalAtk')) || 0;
+    const buffTotalDmgBonus = parseFloat(localStorage.getItem('DerivedBuffTotalDmgBonus')) || 0;
+    const buffTotalCritRate = parseFloat(localStorage.getItem('DerivedBuffTotalCritRate')) || 0;
+    const buffDefenceDown = parseFloat(localStorage.getItem('DerivedBuffDefenceDown')) || 0;
+    const buffResPen = parseFloat(localStorage.getItem('DerivedBuffResPen')) || 0;
+    const buffVulnerability = parseFloat(localStorage.getItem('DerivedBuffVulnerability')) || 0;
+    const buffTrueDmg = parseFloat(localStorage.getItem('DerivedBuffTrueDamage')) || 0;
+
+    // Derived Buffs from Support Characters
+    const supportTotalAtk = buffTotalAtk; // Derived Buff Total ATK
+    const supportTotalAtkPercent = buffTotalAtk / 100; // Convert to percentage
+    const supportTotalDmgBonus = buffTotalDmgBonus / 100; // Convert to percentage
+    const supportTotalCritRate = buffTotalCritRate / 100; // Convert to percentage
+    const supportDefenceDown = buffDefenceDown / 100; // Convert to percentage
+    const supportResPen = buffResPen / 100; // Convert to percentage
+    const supportVulnerability = buffVulnerability / 100; // Convert to percentage
+    const supportTrueDmg = buffTrueDmg / 100; // Convert to percentage
     // Inputs
     const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
     const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
