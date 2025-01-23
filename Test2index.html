@@ -297,7 +297,7 @@ function calculateDamage() {
             let defenceDownBuff = 0;
             let resPenBuff = 0;
             let vulnerabilityBuff = 0;
-    let trueDmgBuff = 0;
+            let trueDmgBuff = 0;
 
 
             if (sparkleActive) {
@@ -306,6 +306,7 @@ function calculateDamage() {
 
                 // Sparkle's Atk Buff: +15% Atk
                 totalAtkBuff += 15;
+                totalDmgBonusBuff += 48;
             }
 
             // Update Derived Buffs section
