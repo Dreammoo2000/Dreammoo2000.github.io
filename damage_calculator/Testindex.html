@@ -189,10 +189,9 @@
 
 
 function calculateDamage() {
-    // Fetch Derived Variables
     const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
-    const dmgMultiplier = parseFloat(document.getElementById("Dmg").value) / 100;
-    const dmgBonus = parseFloat(document.getElementById("DerivedTotalDmgBonus").innerText) / 100;
+    const dmgMultiplier = parseFloat(document.getElementById("Dmg").value) / 100; // Damage Multiplier
+    const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDmgBonus").innerText) / 100; // Derived Damage Bonus
     const critDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
     const critRate = parseFloat(document.getElementById("DerivedTotalCritRate").innerText) / 100;
     const enemyDefenseMultiplier = parseFloat(document.getElementById("DerivedEnemyDefMultiplier").innerText) / 100;
@@ -203,15 +202,14 @@ function calculateDamage() {
     const dmgOriginalPercent = parseFloat(document.getElementById("DmgOriginalPercent").value) / 100;
     const trueDmg = parseFloat(document.getElementById("DerivedTrueDmg").innerText) / 100;
 
-
-    // Calculate Damage
+    // Corrected Damage Formula
     const damage = derivedTotalAtk *
         dmgMultiplier *
-        (1 + dmgMultiplier) *
+        (1 + derivedDmgBonus) * // Use Derived Damage Bonus here
         (1 + critDmg) *
         enemyDefenseMultiplier *
         (enemyType + resPen) *
-        ( 1 + vulnerability ) *
+        (1 + vulnerability) *
         toughness *
         dmgOriginalPercent *
         critRate *
@@ -220,6 +218,7 @@ function calculateDamage() {
     // Update Final Damage
     document.getElementById("FinalDamage").innerText = damage.toFixed(2);
 }
+
 
   </script>
 </body>
