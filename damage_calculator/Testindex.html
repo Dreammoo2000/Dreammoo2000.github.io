@@ -396,9 +396,7 @@ function calculateDamage() {
     });
 
             // Store Derived Buffs for Index Page
-            Store buffs in localStorage for use on the main page
-            const supportBuffs = {
-                atkPercent: totalAtkBuff,
+            atkPercent: totalAtkBuff,
                 dmgBonus: totalDmgBonusBuff,
                 critRate: totalCritRateBuff,
                 critDmg: totalCritDmgBuff,
@@ -411,6 +409,16 @@ function calculateDamage() {
             alert('Support buffs calculated and stored!');
         }
 
+        function transferBuffs() {
+            const supportBuffs = JSON.parse(localStorage.getItem('supportBuffs'));
+
+            if (!supportBuffs) {
+                alert("No buffs available to transfer!");
+                return;
+            }
+
+            alert('Support buffs have been successfully transferred to the main page!');
+        }
       
 
     </script>
