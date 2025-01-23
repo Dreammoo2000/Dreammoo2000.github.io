@@ -125,29 +125,40 @@
 
   <script>
     function calculateDerivedVariables() {
-      // Derived Buffs from Support Characters
-      const supportTotalAtk = parseFloat(localStorage.getItem("DerivedTotalAtk")) || 0;
-      const supportTotalAtkPercent = parseFloat(localStorage.getItem("DerivedTotalAtkPercent")) || 0;
-      const supportTotalDmgBonus = parseFloat(localStorage.getItem("DerivedTotalDmgBonus")) || 0;
-      const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
+    // Derived Buffs from Support Characters
+    const supportTotalAtk = parseFloat(localStorage.getItem("DerivedTotalAtk")) || 0;
+    const supportTotalAtkPercent = parseFloat(localStorage.getItem("DerivedTotalAtkPercent")) || 0;
+    const supportTotalDmgBonus = parseFloat(localStorage.getItem("DerivedTotalDmgBonus")) || 0;
+    const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
 
-      // Variables from Inputs
-      const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
-      const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
-      const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + supportTotalAtk;
-      const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + supportTotalAtkPercent) / 100;
-      const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
-      const critDmg = (parseFloat(document.getElementById("CritDmg").value) + supportTotalCritDmg) / 100;
+    // Variables from Inputs
+    const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
+    const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
+    const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + supportTotalAtk;
+    const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + supportTotalAtkPercent) / 100;
+    const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
+    const critDmg = (parseFloat(document.getElementById("CritDmg").value) + supportTotalCritDmg) / 100;
+    const critRate = parseFloat(document.getElementById("CritRate").value) / 100;
+    const enemyDefMultiplier = parseFloat(document.getElementById("EnemyDefMultiplier").value) / 100;
+    const resPen = parseFloat(document.getElementById("ResPen").value) / 100;
+    const vulnerability = parseFloat(document.getElementById("Vulnerability").value) / 100;
+    const trueDmg = parseFloat(document.getElementById("TrueDmg").value) / 100;
 
-      // Total ATK Calculation
-      const totalAtk = (characterBaseAtk + lightconeBaseAtk) + flatAtk + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
+    // Total ATK Calculation
+    const totalAtk = (characterBaseAtk + lightconeBaseAtk) + flatAtk + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
 
-      // Update Derived Variables
-      document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
-      document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
-      document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
-      document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
-    }
+    // Update Derived Variables
+    document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
+    document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalCritRate").innerText = `${(critRate * 100).toFixed(2)}%`;
+    document.getElementById("DerivedEnemyDefMultiplier").innerText = `${(enemyDefMultiplier * 100).toFixed(2)}%`;
+    document.getElementById("DerivedResPen").innerText = `${(resPen * 100).toFixed(2)}%`;
+    document.getElementById("DerivedVulnerability").innerText = `${(vulnerability * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTrueDmg").innerText = `${(trueDmg * 100).toFixed(2)}%`;
+}
+
 
     function calculateDamage() {
       const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
