@@ -292,6 +292,13 @@ function calculateDamage() {
             // Initialize derived buffs
             let totalCritDmgBuff = 0;
             let totalAtkBuff = 0;
+            let totalDmgBonusBuff = 0;
+            let totalCritRateBuff = 0;
+            let defenceDownBuff = 0;
+            let resPenBuff = 0;
+            let vulnerabilityBuff = 0;
+    let trueDmgBuff = 0;
+
 
             if (sparkleActive) {
                 // Sparkle's Crit Damage Buff: 24% of Sparkle's Crit Damage + 45%
