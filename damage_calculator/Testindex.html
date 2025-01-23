@@ -423,7 +423,25 @@ function calculateDamage() {
       
 
     </script>
- 
+  <script>
+ function transferBuffs() {
+    const derivedBuffs = {
+        atkPercent: parseFloat(document.getElementById("DerivedAtkPercent").innerText) || 0,
+        dmgBonus: parseFloat(document.getElementById("DerivedDmgBonus").innerText) || 0,
+        critRate: parseFloat(document.getElementById("DerivedCritRate").innerText) || 0,
+        critDmg: parseFloat(document.getElementById("DerivedCritDmg").innerText) || 0,
+        resPen: parseFloat(document.getElementById("DerivedResPen").innerText) || 0,
+        vulnerability: parseFloat(document.getElementById("DerivedVulnerability").innerText) || 0,
+        trueDmg: parseFloat(document.getElementById("DerivedTrueDmg").innerText) || 0,
+    };
+
+    // Save buffs to localStorage
+    localStorage.setItem("supportBuffs", JSON.stringify(derivedBuffs));
+
+    // Notify the user
+    alert("Buffs successfully transferred to main page!");
+}
+</script>
 </body>
 </html>
 
