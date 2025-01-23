@@ -304,7 +304,14 @@ function calculateDamage() {
             // Update Derived Buffs section
             document.getElementById('derived-total-crit-dmg').textContent = totalCritDmgBuff.toFixed(2);
             document.getElementById('derived-total-atk').textContent = totalAtkBuff.toFixed(2);
-
+            document.getElementById('DerivedBuffTotalAtk').textContent = totalAtkBuff.toFixed(2);
+            document.getElementById('DerivedBuffTotalDmgBonus').textContent = `${totalDmgBonusBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffTotalCritRate').textContent = `${totalCritRateBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffDefenceDown').textContent = `${defenceDownBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffResPen').textContent = `${resPenBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffVulnerability').textContent = `${vulnerabilityBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffTrueDamage').textContent = `${trueDmgBuff.toFixed(2)}%`;
+  
             console.log("Support Buffs Calculated: ", { totalCritDmgBuff, totalAtkBuff });
 
             // Store Derived Buffs for Index Page
