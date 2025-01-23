@@ -89,6 +89,8 @@
     <label for="DmgOriginalPercent">Damage % of Original:</label>
     <input type="number" id="DmgOriginalPercent" value="100" step="1" onchange="calculateDerivedVariables()"><br>
 
+    <button id="AbsorbBuffsMainPage" onclick="absorbBuffs()">Absorb Buffs</button>
+
     <h2>Toughness and Enemy Type</h2>
     <label for="Toughness">Weakness Broken:</label>
     <select id="Toughness" onchange="calculateDerivedVariables()">
@@ -107,8 +109,7 @@
     <input type="number" id="EnemyLevel" value="1" step="1" onchange="calculateDerivedVariables()"><br>
 
     <button type="button" onclick="calculateDamage()">Calculate Damage</button>
-    <button id="AbsorbBuffsMainPage" onclick="absorbBuffs()">Absorb Buffs</button>
-
+    
     
 
   </form>
