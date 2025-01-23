@@ -385,7 +385,10 @@ function calculateDamage() {
             localStorage.setItem('DerivedBuffVulnerability', vulnerabilityBuff);
             localStorage.setItem('DerivedBuffTrueDamage', trueDmgBuff);
 }
-      <script>
+      
+
+    </script>
+  <script>
     function absorbBuffs() {
         // Retrieve buffs from localStorage
         const supportBuffs = JSON.parse(localStorage.getItem("supportBuffs"));
@@ -420,8 +423,6 @@ function calculateDamage() {
         alert("Buffs successfully absorbed!");
     }
 </script>
-
-    </script>
 </body>
 </html>
 
