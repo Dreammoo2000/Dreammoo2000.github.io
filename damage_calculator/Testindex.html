@@ -142,15 +142,17 @@
     // Inputs
     const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
     const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
-    const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + buffTotalAtk; // Include buffed ATK
-    const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + buffTotalAtk) / 100; // Include buffed ATK%
-    const dmgMultiplier = (parseFloat(document.getElementById("Dmg").value) + buffTotalDmgBonus) / 100; // Include buffed DMG Bonus
-    const critDmg = (parseFloat(document.getElementById("CritDmg").value) + buffTotalCritRate) / 100; // Include buffed Crit DMG
-    const critRate = (parseFloat(document.getElementById("CritRate").value)) / 100; // Assuming Crit Rate buffs are separate
+    const flatAtk = parseFloat(document.getElementById("FlatAtk").value);
+    const atkPercent = parseFloat(document.getElementById("AtkPercent").value) / 100;
+    const dmgBonusInput = parseFloat(document.getElementById("DmgBonus").value) / 100; // Input Damage Bonus
+    const dmgMultiplier = parseFloat(document.getElementById("Dmg").value) / 100;
+    const critDmg = parseFloat(document.getElementById("CritDmg").value) / 100;
+    const critRate = parseFloat(document.getElementById("CritRate").value) / 100;
     const enemyLevel = parseFloat(document.getElementById("EnemyLevel").value);
-    const resPen = (parseFloat(document.getElementById("ResPen").value) + buffResPen) / 100; // Include buffed Res Pen
-    const vulnerability = (parseFloat(document.getElementById("Vulnerability").value) + buffVulnerability) / 100; // Include buffed Vulnerability
-    const trueDmg = (parseFloat(document.getElementById("TrueDmg").value) + buffTrueDmg) / 100; // Include buffed True DMG
+    const defDown = 0; // Example, update if needed
+    const resPen = parseFloat(document.getElementById("ResPen").value) / 100;
+    const vulnerability = parseFloat(document.getElementById("Vulnerability").value) / 100;
+    const trueDmg = parseFloat(document.getElementById("TrueDmg").value) / 100;
     const toughness = parseFloat(document.getElementById("Toughness").value) / 100;
     const enemyType = parseFloat(document.getElementById("EnemyType").value) / 100;
 
@@ -169,6 +171,8 @@
     // Total ATK Calculation
     const totalAtk = (characterBaseAtk + lightconeBaseAtk) * (1 + atkPercent) + flatAtk;
 
+    const derivedDmgBonus = dmgBonusInput;
+
     // Enemy Defense Multiplier
     const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - buffDefenceDown / 100) + 100);
 
@@ -178,6 +182,8 @@
     document.getElementById("DerivedResPen").innerText = `${(resPen * 100).toFixed(2)}%`;
     document.getElementById("DerivedVulnerability").innerText = `${(vulnerability * 100).toFixed(2)}%`;
     document.getElementById("DerivedTotalCritRate").innerText = `${(critRate * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalDmgBonus").innerText = `${(derivedDmgBonus * 100).toFixed(2)}%`; // Updated
     document.getElementById("DerivedTrueDmg").innerText = `${(trueDmg * 100).toFixed(2)}%`;
 }
 
