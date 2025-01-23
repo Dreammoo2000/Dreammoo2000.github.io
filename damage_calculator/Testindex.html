@@ -396,15 +396,21 @@ function calculateDamage() {
     });
 
             // Store Derived Buffs for Index Page
-            localStorage.setItem('derivedTotalCritDmg', totalCritDmgBuff);
-            localStorage.setItem('DerivedBuffTotalAtk', totalAtkBuff);
-            localStorage.setItem('DerivedBuffTotalDmgBonus', totalDmgBonusBuff);
-            localStorage.setItem('DerivedBuffTotalCritRate', totalCritRateBuff); 
-            localStorage.setItem('DerivedBuffDefenceDown', defenceDownBuff);
-            localStorage.setItem('DerivedBuffResPen', resPenBuff);
-            localStorage.setItem('DerivedBuffVulnerability', vulnerabilityBuff);
-            localStorage.setItem('DerivedBuffTrueDamage', trueDmgBuff);
-}
+            Store buffs in localStorage for use on the main page
+            const supportBuffs = {
+                atkPercent: totalAtkBuff,
+                dmgBonus: totalDmgBonusBuff,
+                critRate: totalCritRateBuff,
+                critDmg: totalCritDmgBuff,
+                resPen: resPenBuff,
+                vulnerability: vulnerabilityBuff,
+                trueDmg: trueDmgBuff,
+                defenceDown: defenceDownBuff
+            };
+            localStorage.setItem('supportBuffs', JSON.stringify(supportBuffs));
+            alert('Support buffs calculated and stored!');
+        }
+
       
 
     </script>
