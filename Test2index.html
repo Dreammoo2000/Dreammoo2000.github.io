@@ -142,6 +142,17 @@
     const toughness = parseFloat(document.getElementById("Toughness").value) / 100;
     const enemyType = parseFloat(document.getElementById("EnemyType").value) / 100;
 
+      const derivedTotalAtkPercent = atkPercent * 100;
+    document.getElementById("DerivedTotalAtkPercent").innerText = `${derivedTotalAtkPercent.toFixed(2)}%`;
+
+    // Derived Total Damage Bonus
+    const derivedTotalDmgBonus = dmgMultiplier * 100;
+    document.getElementById("DerivedTotalDmgBonus").innerText = `${derivedTotalDmgBonus.toFixed(2)}%`;
+
+    // Derived Total Crit Damage
+    const derivedTotalCritDmg = critDmg * 100;
+    document.getElementById("DerivedTotalCritDmg").innerText = `${derivedTotalCritDmg.toFixed(2)}%`;
+
     // Total ATK Calculation
     const totalAtk = (characterBaseAtk + lightconeBaseAtk) * (1 + atkPercent) + flatAtk;
 
