@@ -190,6 +190,26 @@
     document.getElementById("DerivedTotalDmgBonus").innerText = `${(derivedDmgBonus * 100).toFixed(2)}%`; // Updated
     document.getElementById("DerivedTrueDmg").innerText = `${(trueDmg * 100).toFixed(2)}%`;
 }
+    window.onload = function () {
+    const storedBuffs = localStorage.getItem("supportBuffs");
+    if (storedBuffs) {
+        const buffs = JSON.parse(storedBuffs);
+
+        document.getElementById('DerivedBuffATK').textContent = `${buffs.atkPercent.toFixed(2)}%`;
+        document.getElementById('DerivedBuffDmgBonus').textContent = `${buffs.dmgBonus.toFixed(2)}%`;
+        document.getElementById('DerivedBuffCritRate').textContent = `${buffs.critRate.toFixed(2)}%`;
+        document.getElementById('DerivedBuffCritDmg').textContent = `${buffs.critDmg.toFixed(2)}%`;
+        document.getElementById('DerivedBuffDefenceDown').textContent = `${buffs.defenceDown.toFixed(2)}%`;
+        document.getElementById('DerivedBuffResPen').textContent = `${buffs.resPen.toFixed(2)}%`;
+        document.getElementById('DerivedBuffVulnerability').textContent = `${buffs.vulnerability.toFixed(2)}%`;
+        document.getElementById('DerivedBuffTrueDamage').textContent = `${buffs.trueDmg.toFixed(2)}%`;
+
+        alert("Buffs successfully loaded!");
+    } else {
+        alert("No buffs found in storage.");
+    }
+};
+
 
 
 function calculateDamage() {
