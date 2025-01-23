@@ -214,46 +214,10 @@ function calculateDamage() {
         dmgOriginalPercent *
         critRate *
         (1 + trueDmg);
-  
+
     // Update Final Damage
     document.getElementById("FinalDamage").innerText = damage.toFixed(2);
 }
-    <button id="AbsorbBuffsMainPage" onclick="absorbBuffs()">Absorb Buffs</button>
-    function absorbBuffs() {
-    // Retrieve buffs from localStorage
-    const supportBuffs = JSON.parse(localStorage.getItem("supportBuffs"));
-
-    if (!supportBuffs) {
-        alert("No buffs available to absorb!");
-        return;
-    }
-
-    // Update derived variables
-    const atkPercent = parseFloat(document.getElementById("AtkPercent").value) || 0;
-    const dmgBonus = parseFloat(document.getElementById("DmgBonus").value) || 0;
-    const critRate = parseFloat(document.getElementById("CritRate").value) || 0;
-    const critDmg = parseFloat(document.getElementById("CritDmg").value) || 0;
-    const resPen = parseFloat(document.getElementById("ResPen").value) || 0;
-    const vulnerability = parseFloat(document.getElementById("Vulnerability").value) || 0;
-    const trueDmg = parseFloat(document.getElementById("TrueDmg").value) || 0;
-
-    // Add buffs from support characters
-    document.getElementById("AtkPercent").value = (atkPercent + supportBuffs.atkPercent).toFixed(2);
-    document.getElementById("DmgBonus").value = (dmgBonus + supportBuffs.dmgBonus).toFixed(2);
-    document.getElementById("CritRate").value = (critRate + supportBuffs.critRate).toFixed(2);
-    document.getElementById("CritDmg").value = (critDmg + supportBuffs.critDmg).toFixed(2);
-    document.getElementById("ResPen").value = (resPen + supportBuffs.resPen).toFixed(2);
-    document.getElementById("Vulnerability").value = (vulnerability + supportBuffs.vulnerability).toFixed(2);
-    document.getElementById("TrueDmg").value = (trueDmg + supportBuffs.trueDmg).toFixed(2);
-
-    // Recalculate derived variables
-    calculateDerivedVariables();
-
-    // Notify the user
-    alert("Buffs successfully absorbed!");
-}
-
-
 
 
   </script>
@@ -397,34 +361,6 @@ function calculateDamage() {
             localStorage.setItem('DerivedBuffVulnerability', vulnerabilityBuff);
             localStorage.setItem('DerivedBuffTrueDamage', trueDmgBuff);
 }
-      <button id="AbsorbBuffsButton" onclick="transferBuffs()">Absorb Buffs</button>
-      function transferBuffs() {
-    const derivedBuffs = {
-        atkPercent: parseFloat(document.getElementById("DerivedAtkPercent").innerText) || 0,
-        dmgBonus: parseFloat(document.getElementById("DerivedDmgBonus").innerText) || 0,
-        critRate: parseFloat(document.getElementById("DerivedCritRate").innerText) || 0,
-        critDmg: parseFloat(document.getElementById("DerivedCritDmg").innerText) || 0,
-        resPen: parseFloat(document.getElementById("DerivedResPen").innerText) || 0,
-        vulnerability: parseFloat(document.getElementById("DerivedVulnerability").innerText) || 0,
-        trueDmg: parseFloat(document.getElementById("DerivedTrueDmg").innerText) || 0,
-    };
-
-    // Save buffs to localStorage
-    localStorage.setItem("supportBuffs", JSON.stringify(derivedBuffs));
-
-    // Notify the user
-    alert("Buffs successfully transferred to main page!");
-}
-
-
-    // Save buffs to localStorage
-    localStorage.setItem("supportBuffs", JSON.stringify(derivedBuffs));
-
-    // Notify the user
-    alert("Buffs successfully transferred to main page!");
-}
-
-
     </script>
 </body>
 </html>
