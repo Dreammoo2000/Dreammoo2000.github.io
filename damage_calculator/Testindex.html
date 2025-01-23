@@ -126,7 +126,7 @@
 
   <script>
     function calculateDerivedVariables() {
-    
+    // Retrieve Buffs from localStorage
     const buffTotalAtk = parseFloat(localStorage.getItem('DerivedBuffTotalAtk')) || 0;
     const buffTotalDmgBonus = parseFloat(localStorage.getItem('DerivedBuffTotalDmgBonus')) || 0;
     const buffTotalCritRate = parseFloat(localStorage.getItem('DerivedBuffTotalCritRate')) || 0;
@@ -135,33 +135,23 @@
     const buffVulnerability = parseFloat(localStorage.getItem('DerivedBuffVulnerability')) || 0;
     const buffTrueDmg = parseFloat(localStorage.getItem('DerivedBuffTrueDamage')) || 0;
 
-    // Derived Buffs from Support Characters
-    const supportTotalAtk = buffTotalAtk; // Derived Buff Total ATK
-    const supportTotalAtkPercent = buffTotalAtk / 100; // Convert to percentage
-    const supportTotalDmgBonus = buffTotalDmgBonus / 100; // Convert to percentage
-    const supportTotalCritRate = buffTotalCritRate / 100; // Convert to percentage
-    const supportDefenceDown = buffDefenceDown / 100; // Convert to percentage
-    const supportResPen = buffResPen / 100; // Convert to percentage
-    const supportVulnerability = buffVulnerability / 100; // Convert to percentage
-    const supportTrueDmg = buffTrueDmg / 100; // Convert to percentage
     // Inputs
     const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
     const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
-    const flatAtk = parseFloat(document.getElementById("FlatAtk").value);
-    const atkPercent = parseFloat(document.getElementById("AtkPercent").value) / 100;
-    const dmgMultiplier = parseFloat(document.getElementById("Dmg").value) / 100;
-    const critDmg = parseFloat(document.getElementById("CritDmg").value) / 100;
-    const critRate = parseFloat(document.getElementById("CritRate").value) / 100;
+    const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + buffTotalAtk; // Include buffed ATK
+    const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + buffTotalAtk) / 100; // Include buffed ATK%
+    const dmgMultiplier = (parseFloat(document.getElementById("Dmg").value) + buffTotalDmgBonus) / 100; // Include buffed DMG Bonus
+    const critDmg = (parseFloat(document.getElementById("CritDmg").value) + buffTotalCritRate) / 100; // Include buffed Crit DMG
+    const critRate = (parseFloat(document.getElementById("CritRate").value)) / 100; // Assuming Crit Rate buffs are separate
     const enemyLevel = parseFloat(document.getElementById("EnemyLevel").value);
-    const defDown = 0; // Assuming "Def Down" is another variable you can add later.
-    const resPen = parseFloat(document.getElementById("ResPen").value) / 100;
-    const vulnerability = parseFloat(document.getElementById("Vulnerability").value) / 100;
-    const trueDmg = parseFloat(document.getElementById("TrueDmg").value) / 100;
-    const dmgOriginalPercent = parseFloat(document.getElementById("DmgOriginalPercent").value) / 100;
+    const resPen = (parseFloat(document.getElementById("ResPen").value) + buffResPen) / 100; // Include buffed Res Pen
+    const vulnerability = (parseFloat(document.getElementById("Vulnerability").value) + buffVulnerability) / 100; // Include buffed Vulnerability
+    const trueDmg = (parseFloat(document.getElementById("TrueDmg").value) + buffTrueDmg) / 100; // Include buffed True DMG
     const toughness = parseFloat(document.getElementById("Toughness").value) / 100;
     const enemyType = parseFloat(document.getElementById("EnemyType").value) / 100;
 
-      const derivedTotalAtkPercent = atkPercent * 100;
+    // Derived Total ATK%
+    const derivedTotalAtkPercent = atkPercent * 100;
     document.getElementById("DerivedTotalAtkPercent").innerText = `${derivedTotalAtkPercent.toFixed(2)}%`;
 
     // Derived Total Damage Bonus
@@ -176,7 +166,7 @@
     const totalAtk = (characterBaseAtk + lightconeBaseAtk) * (1 + atkPercent) + flatAtk;
 
     // Enemy Defense Multiplier
-    const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - defDown) + 100);
+    const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - buffDefenceDown / 100) + 100);
 
     // Update Derived Variables in UI
     document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
@@ -186,6 +176,7 @@
     document.getElementById("DerivedTotalCritRate").innerText = `${(critRate * 100).toFixed(2)}%`;
     document.getElementById("DerivedTrueDmg").innerText = `${(trueDmg * 100).toFixed(2)}%`;
 }
+
 
 function calculateDamage() {
     // Fetch Derived Variables
