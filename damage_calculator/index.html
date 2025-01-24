@@ -61,6 +61,10 @@
     <label for="AtkPercent">ATK%:</label>
     <input type="number" id="AtkPercent" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
+    <label for="DmgBonus">Damage Bonus (%):</label>
+    <input type="number" id="DmgBonus" value="0" step="1" onchange="calculateDerivedVariables()"><br>
+
+
     <label for="Dmg">Damage Multiplier (%):</label>
     <input type="number" id="Dmg" value="0" step="1" onchange="calculateDerivedVariables()"><br>
 
@@ -103,60 +107,190 @@
     <input type="number" id="EnemyLevel" value="1" step="1" onchange="calculateDerivedVariables()"><br>
 
     <button type="button" onclick="calculateDamage()">Calculate Damage</button>
+    <button id="AbsorbBuffsMainPage" onclick="absorbBuffs()">Absorb Buffs</button>
+
+    
+
   </form>
 
   <div class="derived-values">
-    <h2>Derived Variables</h2>
-    <ul>
-      <li><strong>Derived Total ATK:</strong> <span id="DerivedTotalAtk">0</span></li>
-      <li><strong>Derived Total ATK%:</strong> <span id="DerivedTotalAtkPercent">0%</span></li>
-      <li><strong>Derived Total Damage Bonus:</strong> <span id="DerivedTotalDamageBonus">0%</span></li>
-      <li><strong>Derived Total Crit Damage:</strong> <span id="DerivedTotalCritDmg">0%</span></li>
-      <li><strong>Derived Total Crit Rate:</strong> <span id="DerivedTotalCritRate">0%</span></li>
-      <li><strong>Derived Enemy Defense Multiplier:</strong> <span id="DerivedEnemyDefMultiplier">0%</span></li>
-      <li><strong>Derived Resistance Penetration:</strong> <span id="DerivedResPen">0%</span></li>
-      <li><strong>Derived Vulnerability:</strong> <span id="DerivedVulnerability">0%</span></li>
-      <li><strong>Derived True Damage:</strong> <span id="DerivedTrueDmg">0%</span></li>
-    </ul>
-  </div>
+  <h2>Derived Variables</h2>
+  <ul>
+    <li><strong>Derived Total ATK:</strong> <span id="DerivedTotalAtk">0</span></li>
+    <li><strong>Derived Total ATK%:</strong> <span id="DerivedTotalAtkPercent">0%</span></li>
+    <li><strong>Derived Total Damage Bonus:</strong> <span id="DerivedTotalDmgBonus">0%</span></li>
+    <li><strong>Derived Total Crit Damage:</strong> <span id="DerivedTotalCritDmg">0%</span></li>
+    <li><strong>Derived Total Crit Rate:</strong> <span id="DerivedTotalCritRate">0%</span></li>
+    <li><strong>Derived Enemy Defense Multiplier:</strong> <span id="DerivedEnemyDefMultiplier">0%</span></li>
+    <li><strong>Derived Resistance Penetration:</strong> <span id="DerivedResPen">0%</span></li>
+    <li><strong>Derived Vulnerability:</strong> <span id="DerivedVulnerability">0%</span></li>
+    <li><strong>Derived True Damage:</strong> <span id="DerivedTrueDmg">0%</span></li>
+  </ul>
+  <h2>Absorbed Buffs</h2>
+  <ul>
+    <li><strong>Absorbed ATK% Buff:</strong> <span id="DerivedBuffATK">0%</span></li>
+    <li><strong>Absorbed Damage Bonus Buff:</strong> <span id="DerivedBuffDmgBonus">0%</span></li>
+    <li><strong>Absorbed Crit Rate Buff:</strong> <span id="DerivedBuffCritRate">0%</span></li>
+    <li><strong>Absorbed Crit Damage Buff:</strong> <span id="DerivedBuffCritDmg">0%</span></li>
+    <li><strong>Absorbed Defense Down Buff:</strong> <span id="DerivedBuffDefenceDown">0%</span></li>
+    <li><strong>Absorbed Resistance Penetration Buff:</strong> <span id="DerivedBuffResPen">0%</span></li>
+    <li><strong>Absorbed Vulnerability Buff:</strong> <span id="DerivedBuffVulnerability">0%</span></li>
+    <li><strong>Absorbed True Damage Buff:</strong> <span id="DerivedBuffTrueDamage">0%</span></li>
+  </ul>
+</div>
+
+
 
   <h2>Final Damage</h2>
   <p id="FinalDamage">0</p>
 
   <script>
     function calculateDerivedVariables() {
-      // Derived Buffs from Support Characters
-      const supportTotalAtk = parseFloat(localStorage.getItem("DerivedTotalAtk")) || 0;
-      const supportTotalAtkPercent = parseFloat(localStorage.getItem("DerivedTotalAtkPercent")) || 0;
-      const supportTotalDmgBonus = parseFloat(localStorage.getItem("DerivedTotalDmgBonus")) || 0;
-      const supportTotalCritDmg = parseFloat(localStorage.getItem("DerivedTotalCritDmg")) || 0;
+    // Retrieve Buffs from localStorage
+    const buffTotalAtk = parseFloat(localStorage.getItem('DerivedBuffTotalAtk')) || 0;
+    const buffTotalDmgBonus = parseFloat(localStorage.getItem('DerivedBuffTotalDmgBonus')) || 0;
+    const buffTotalCritRate = parseFloat(localStorage.getItem('DerivedBuffTotalCritRate')) || 0;
+    const buffDefenceDown = parseFloat(localStorage.getItem('DerivedBuffDefenceDown')) || 0;
+    const buffResPen = parseFloat(localStorage.getItem('DerivedBuffResPen')) || 0;
+    const buffVulnerability = parseFloat(localStorage.getItem('DerivedBuffVulnerability')) || 0;
+    const buffTrueDmg = parseFloat(localStorage.getItem('DerivedBuffTrueDamage')) || 0;
 
-      // Variables from Inputs
-      const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
-      const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
-      const flatAtk = parseFloat(document.getElementById("FlatAtk").value) + supportTotalAtk;
-      const atkPercent = (parseFloat(document.getElementById("AtkPercent").value) + supportTotalAtkPercent) / 100;
-      const dmgBonus = (parseFloat(document.getElementById("Dmg").value) + supportTotalDmgBonus) / 100;
-      const critDmg = (parseFloat(document.getElementById("CritDmg").value) + supportTotalCritDmg) / 100;
+    // Inputs
+    const characterBaseAtk = parseFloat(document.getElementById("CharacterBaseAtk").value);
+    const lightconeBaseAtk = parseFloat(document.getElementById("LightconeBaseAtk").value);
+    const flatAtk = parseFloat(document.getElementById("FlatAtk").value);
+    const atkPercent = parseFloat(document.getElementById("AtkPercent").value) / 100;
+    const dmgBonusInput = parseFloat(document.getElementById("DmgBonus").value) / 100; // Input Damage Bonus
+    const dmgMultiplier = parseFloat(document.getElementById("Dmg").value) / 100;
+    const critDmg = parseFloat(document.getElementById("CritDmg").value) / 100;
+    const critRate = parseFloat(document.getElementById("CritRate").value) / 100;
+    const enemyLevel = parseFloat(document.getElementById("EnemyLevel").value);
+    const defDown = 0; // Example, update if needed
+    const resPen = parseFloat(document.getElementById("ResPen").value) / 100;
+    const vulnerability = parseFloat(document.getElementById("Vulnerability").value) / 100;
+    const trueDmg = parseFloat(document.getElementById("TrueDmg").value) / 100;
+    const toughness = parseFloat(document.getElementById("Toughness").value) / 100;
+    const enemyType = parseFloat(document.getElementById("EnemyType").value) / 100;
 
-      // Total ATK Calculation
-      const totalAtk = (characterBaseAtk + lightconeBaseAtk) + flatAtk + ((characterBaseAtk + lightconeBaseAtk) * atkPercent);
+    // Derived Total ATK%
+    const derivedTotalAtkPercent = atkPercent * 100;
+    document.getElementById("DerivedTotalAtkPercent").innerText = `${derivedTotalAtkPercent.toFixed(2)}%`;
 
-      // Update Derived Variables
-      document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
-      document.getElementById("DerivedTotalAtkPercent").innerText = `${(atkPercent * 100).toFixed(2)}%`;
-      document.getElementById("DerivedTotalDamageBonus").innerText = `${(dmgBonus * 100).toFixed(2)}%`;
-      document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
+    // Derived Total Damage Bonus
+    const derivedTotalDmgBonus = dmgMultiplier * 100;
+    document.getElementById("DerivedTotalDmgBonus").innerText = `${derivedTotalDmgBonus.toFixed(2)}%`;
+
+    // Derived Total Crit Damage
+    const derivedTotalCritDmg = critDmg * 100;
+    document.getElementById("DerivedTotalCritDmg").innerText = `${derivedTotalCritDmg.toFixed(2)}%`;
+
+    // Total ATK Calculation
+    const totalAtk = (characterBaseAtk + lightconeBaseAtk) * (1 + atkPercent) + flatAtk;
+
+    const derivedDmgBonus = dmgBonusInput;
+
+    // Enemy Defense Multiplier
+    const enemyDefenseMultiplier = 100 / ((enemyLevel + 20) * (1 - buffDefenceDown / 100) + 100);
+
+    // Update Derived Variables in UI
+    document.getElementById("DerivedTotalAtk").innerText = totalAtk.toFixed(2);
+    document.getElementById("DerivedEnemyDefMultiplier").innerText = `${(enemyDefenseMultiplier * 100).toFixed(2)}%`;
+    document.getElementById("DerivedResPen").innerText = `${(resPen * 100).toFixed(2)}%`;
+    document.getElementById("DerivedVulnerability").innerText = `${(vulnerability * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalCritRate").innerText = `${(critRate * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalCritDmg").innerText = `${(critDmg * 100).toFixed(2)}%`;
+    document.getElementById("DerivedTotalDmgBonus").innerText = `${(derivedDmgBonus * 100).toFixed(2)}%`; // Updated
+    document.getElementById("DerivedTrueDmg").innerText = `${(trueDmg * 100).toFixed(2)}%`;
+}
+    window.onload = function () {
+    const storedBuffs = localStorage.getItem("supportBuffs");
+    if (storedBuffs) {
+        const buffs = JSON.parse(storedBuffs);
+
+        document.getElementById('DerivedBuffATK').textContent = `${buffs.atkPercent.toFixed(2)}%`;
+        document.getElementById('DerivedBuffDmgBonus').textContent = `${buffs.dmgBonus.toFixed(2)}%`;
+        document.getElementById('DerivedBuffCritRate').textContent = `${buffs.critRate.toFixed(2)}%`;
+        document.getElementById('DerivedBuffCritDmg').textContent = `${buffs.critDmg.toFixed(2)}%`;
+        document.getElementById('DerivedBuffDefenceDown').textContent = `${buffs.defenceDown.toFixed(2)}%`;
+        document.getElementById('DerivedBuffResPen').textContent = `${buffs.resPen.toFixed(2)}%`;
+        document.getElementById('DerivedBuffVulnerability').textContent = `${buffs.vulnerability.toFixed(2)}%`;
+        document.getElementById('DerivedBuffTrueDamage').textContent = `${buffs.trueDmg.toFixed(2)}%`;
+
+        alert("Buffs successfully loaded!");
+    } else {
+        alert("No buffs found in storage.");
     }
+};
 
-    function calculateDamage() {
-      const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
-      const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDamageBonus").innerText) / 100;
-      const derivedCritDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
 
-      const damage = derivedTotalAtk * (1 + derivedDmgBonus) * (1 + derivedCritDmg);
-      document.getElementById("FinalDamage").innerText = damage.toFixed(2);
-    }
+
+function calculateDamage() {
+    const derivedTotalAtk = parseFloat(document.getElementById("DerivedTotalAtk").innerText);
+    const dmgMultiplier = parseFloat(document.getElementById("Dmg").value) / 100; // Damage Multiplier
+    const derivedDmgBonus = parseFloat(document.getElementById("DerivedTotalDmgBonus").innerText) / 100; // Derived Damage Bonus
+    const critDmg = parseFloat(document.getElementById("DerivedTotalCritDmg").innerText) / 100;
+    const critRate = parseFloat(document.getElementById("DerivedTotalCritRate").innerText) / 100;
+    const enemyDefenseMultiplier = parseFloat(document.getElementById("DerivedEnemyDefMultiplier").innerText) / 100;
+    const resPen = parseFloat(document.getElementById("DerivedResPen").innerText) / 100;
+    const vulnerability = parseFloat(document.getElementById("DerivedVulnerability").innerText) / 100;
+    const toughness = parseFloat(document.getElementById("Toughness").value) / 100;
+    const enemyType = parseFloat(document.getElementById("EnemyType").value) / 100;
+    const dmgOriginalPercent = parseFloat(document.getElementById("DmgOriginalPercent").value) / 100;
+    const trueDmg = parseFloat(document.getElementById("DerivedTrueDmg").innerText) / 100;
+
+    // Corrected Damage Formula
+    const damage = derivedTotalAtk *
+        dmgMultiplier *
+        (1 + derivedDmgBonus) * // Use Derived Damage Bonus here
+        (1 + critDmg) *
+        enemyDefenseMultiplier *
+        (enemyType + resPen) *
+        (1 + vulnerability) *
+        toughness *
+        dmgOriginalPercent *
+        critRate *
+        (1 + trueDmg);
+
+    // Update Final Damage
+    document.getElementById("FinalDamage").innerText = damage.toFixed(2);
+}
+
+
   </script>
+   <script>
+    function absorbBuffs() {
+        // Retrieve buffs from localStorage
+        const supportBuffs = JSON.parse(localStorage.getItem("supportBuffs"));
+
+        if (!supportBuffs) {
+            alert("No buffs available to absorb!");
+            return;
+        }
+
+        // Update derived variables
+        const atkPercent = parseFloat(document.getElementById("AtkPercent").value) || 0;
+        const dmgBonus = parseFloat(document.getElementById("DmgBonus").value) || 0;
+        const critRate = parseFloat(document.getElementById("CritRate").value) || 0;
+        const critDmg = parseFloat(document.getElementById("CritDmg").value) || 0;
+        const resPen = parseFloat(document.getElementById("ResPen").value) || 0;
+        const vulnerability = parseFloat(document.getElementById("Vulnerability").value) || 0;
+        const trueDmg = parseFloat(document.getElementById("TrueDmg").value) || 0;
+
+        // Add buffs from support characters
+        document.getElementById("AtkPercent").value = (atkPercent + supportBuffs.atkPercent).toFixed(2);
+        document.getElementById("DmgBonus").value = (dmgBonus + supportBuffs.dmgBonus).toFixed(2);
+        document.getElementById("CritRate").value = (critRate + supportBuffs.critRate).toFixed(2);
+        document.getElementById("CritDmg").value = (critDmg + supportBuffs.critDmg).toFixed(2);
+        document.getElementById("ResPen").value = (resPen + supportBuffs.resPen).toFixed(2);
+        document.getElementById("Vulnerability").value = (vulnerability + supportBuffs.vulnerability).toFixed(2);
+        document.getElementById("TrueDmg").value = (trueDmg + supportBuffs.trueDmg).toFixed(2);
+
+        // Recalculate derived variables
+        calculateDerivedVariables();
+
+        // Notify the user
+        alert("Buffs successfully absorbed!");
+    }
+</script>
 </body>
 </html>
