@@ -1,98 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support Characters</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Characters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .derived-section {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Support Characters Buffs</h1>
-  <form>
-    <!-- Support Buffs Section -->
-    <label for="SupportDamageBonus">Support Damage Bonus (%):</label>
-    <input type="number" id="SupportDamageBonus" value="25" step="1"><br><br>
+    <div class="container">
+        <h1>Support Characters</h1>
+        <form id="support-form">
+            <!-- Sparkle Buff -->
+            <h2>Sparkle</h2>
+            <label for="sparkle-active">Is Sparkle Active?</label>
+            <select id="sparkle-active">
+                <option value="true">True</option>
+                <option value="false" selected>False</option>
+            </select>
 
-    <label for="SupportResPen">Support Resistance Penetration (%):</label>
-    <input type="number" id="SupportResPen" value="25" step="1"><br><br>
+            <label for="sparkle-crit-dmg">Sparkle's Crit Damage (%):</label>
+            <input type="number" id="sparkle-crit-dmg" value="0">
 
-    <!-- Sparkle Character Section -->
-    <h2>Sparkle</h2>
-    <label for="SparkleActive">Is Sparkle Active?</label>
-    <input type="checkbox" id="SparkleActive" onclick="toggleSparkleInputs()"><br><br>
+            <button type="button" class="btn" onclick="calculateSupportBuffs()">Calculate Support Buffs</button>
+        </form>
 
-    <div id="SparkleInputs" style="display: none;">
-      <label for="SparkleCritDmg">Sparkle's Critical Damage (%):</label>
-      <input type="number" id="SparkleCritDmg" value="0" step="1"><br><br>
+        <div class="derived-section">
+            <h2>Derived Buffs</h2>
+            <p><strong>Derived Total Crit Damage Buff:</strong> <span id="derived-total-crit-dmg">0</span></p>
+            <p><strong>Derived Total Atk Buff (%):</strong> <span id="derived-total-atk">0</span></p>
+            <p><strong>Derived Buff Total ATK:</strong> <span id="DerivedBuffTotalAtk">0</span></p>
+            <p><strong>Derived Buff Total Damage Bonus:</strong> <span id="DerivedBuffTotalDmgBonus">0%</span></p>
+            <p><strong>Derived Buff Total Crit Rate:</strong> <span id="DerivedBuffTotalCritRate">0%</span></p>
+            <p><strong>Derived Buff Defence Down:</strong> <span id="DerivedBuffDefenceDown">0%</span></p>
+            <p><strong>Derived Buff Resistance Penetration:</strong> <span id="DerivedBuffResPen">0%</span></p>
+            <p><strong>Derived Buff Vulnerability:</strong> <span id="DerivedBuffVulnerability">0%</span></p>
+            <p><strong>Derived Buff True Damage:</strong> <span id="DerivedBuffTrueDamage">0%</span></p>
+        </div>
 
-      <label for="CharacterBaseAtk">Character Base Attack:</label>
-      <input type="number" id="CharacterBaseAtk" value="1000" step="1"><br><br>
+        <a href="index.html" class="btn">Return to Main Calculator</a>
+      <button id="AbsorbBuffsButton" onclick="transferBuffs()">Absorb Buffs</button>
 
-      <label for="LightconeBaseAtk">Lightcone Base Attack:</label>
-      <input type="number" id="LightconeBaseAtk" value="500" step="1"><br><br>
-
-      <label for="FlatAtk">Flat Attack Bonus:</label>
-      <input type="number" id="FlatAtk" value="200" step="1"><br><br>
-
-      <label for="AtkPercent">Attack Bonus Percentage (%):</label>
-      <input type="number" id="AtkPercent" value="20" step="1"><br><br>
-
-      <label for="QuantumAllies">Number of Quantum Allies:</label>
-      <input type="number" id="QuantumAllies" value="1" min="1" max="3" step="1"><br><br>
     </div>
 
-    <button type="button" onclick="saveSupportBuffs()">Save Buffs</button>
-  </form>
+    <script>
+      
 
-  <button onclick="goToMain()">Go to Main Damage Calculator</button>
+        function calculateSupportBuffs() {
+            // Get Sparkle inputs
+            const sparkleActive = document.getElementById('sparkle-active').value === 'true';
+            const sparkleCritDmg = parseFloat(document.getElementById('sparkle-crit-dmg').value) || 0;
 
+            // Initialize derived buffs
+            let totalCritDmgBuff = 0;
+            let totalAtkBuff = 0;
+            let totalDmgBonusBuff = 0;
+            let totalCritRateBuff = 0;
+            let defenceDownBuff = 0;
+            let resPenBuff = 0;
+            let vulnerabilityBuff = 0;
+            let trueDmgBuff = 0;
+
+
+            if (sparkleActive) {
+                // Sparkle's Crit Damage Buff: 24% of Sparkle's Crit Damage + 45%
+                totalCritDmgBuff += (0.24 * sparkleCritDmg) + 45;
+
+                // Sparkle's Atk Buff: +15% Atk
+                totalAtkBuff += 15;
+                totalDmgBonusBuff += 48;
+            }
+
+            // Update Derived Buffs section
+            document.getElementById('derived-total-crit-dmg').textContent = totalCritDmgBuff.toFixed(2);
+            document.getElementById('derived-total-atk').textContent = totalAtkBuff.toFixed(2);
+            document.getElementById('DerivedBuffTotalAtk').textContent = totalAtkBuff.toFixed(2);
+            document.getElementById('DerivedBuffTotalDmgBonus').textContent = `${totalDmgBonusBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffTotalCritRate').textContent = `${totalCritRateBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffDefenceDown').textContent = `${defenceDownBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffResPen').textContent = `${resPenBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffVulnerability').textContent = `${vulnerabilityBuff.toFixed(2)}%`;
+            document.getElementById('DerivedBuffTrueDamage').textContent = `${trueDmgBuff.toFixed(2)}%`;
+  
+            console.log("Support Buffs Calculated: ", {
+        totalAtkBuff,
+        totalDmgBonusBuff,
+        totalCritDmgBuff,
+        totalCritRateBuff,
+        defenceDownBuff,
+        resPenBuff,
+        vulnerabilityBuff,
+        trueDmgBuff,
+    });
+
+            // Store Derived Buffs for Index Page
+            localStorage.setItem('derivedTotalCritDmg', totalCritDmgBuff);
+            localStorage.setItem('DerivedBuffTotalAtk', totalAtkBuff);
+            localStorage.setItem('DerivedBuffTotalDmgBonus', totalDmgBonusBuff);
+            localStorage.setItem('DerivedBuffTotalCritRate', totalCritRateBuff); 
+            localStorage.setItem('DerivedBuffDefenceDown', defenceDownBuff);
+            localStorage.setItem('DerivedBuffResPen', resPenBuff);
+            localStorage.setItem('DerivedBuffVulnerability', vulnerabilityBuff);
+            localStorage.setItem('DerivedBuffTrueDamage', trueDmgBuff);
+}
+      
+
+    </script>
   <script>
-    function toggleSparkleInputs() {
-      const sparkleInputs = document.getElementById('SparkleInputs');
-      sparkleInputs.style.display = document.getElementById('SparkleActive').checked ? 'block' : 'none';
-    }
+function transferBuffs() {
+    const derivedBuffs = {
+        atkPercent: parseFloat(document.getElementById("DerivedBuffTotalAtk").innerText) || 0,
+        dmgBonus: parseFloat(document.getElementById("DerivedBuffTotalDmgBonus").innerText) || 0,
+        critRate: parseFloat(document.getElementById("DerivedBuffTotalCritRate").innerText) || 0,
+        critDmg: parseFloat(document.getElementById("derived-total-crit-dmg").innerText) || 0,
+        resPen: parseFloat(document.getElementById("DerivedBuffResPen").innerText) || 0,
+        vulnerability: parseFloat(document.getElementById("DerivedBuffVulnerability").innerText) || 0,
+        trueDmg: parseFloat(document.getElementById("DerivedBuffTrueDamage").innerText) || 0,
+    };
 
-    function saveSupportBuffs() {
-      // Support Damage Buffs
-      const totalDamageBonus = parseFloat(document.getElementById('SupportDamageBonus').value) / 100;
-      const totalResPen = parseFloat(document.getElementById('SupportResPen').value) / 100;
+    // Save buffs to localStorage
+    localStorage.setItem("supportBuffs", JSON.stringify(derivedBuffs));
 
-      // Sparkle Buffs
-      let sparkleCritDmgBuff = 0;
-      let sparkleDmgBoost = 0;
-      let sparkleAtk = 0;
+    // Notify the user
+    alert("Buffs successfully transferred to main page!");
+}
+</script>
 
-      if (document.getElementById('SparkleActive').checked) {
-        const sparkleCritDmg = parseFloat(document.getElementById('SparkleCritDmg').value) / 100;
-        const baseAtk = parseFloat(document.getElementById('CharacterBaseAtk').value) + parseFloat(document.getElementById('LightconeBaseAtk').value);
-        const flatAtk = parseFloat(document.getElementById('FlatAtk').value);
-        const atkPercent = parseFloat(document.getElementById('AtkPercent').value) / 100;
-
-        // Calculate Sparkle's Attack
-        sparkleAtk = baseAtk + flatAtk + baseAtk * atkPercent;
-
-        // Quantum Allies Bonus
-        const quantumAllies = parseInt(document.getElementById('QuantumAllies').value);
-        const quantumAtkBoost = quantumAllies === 1 ? 0.05 : quantumAllies === 2 ? 0.15 : 0.30;
-
-        sparkleAtk += baseAtk * quantumAtkBoost;
-
-        // Buffs
-        sparkleCritDmgBuff = 0.24 * sparkleCritDmg + 0.45;
-        sparkleDmgBoost = 0.48;
-      }
-
-      // Save to localStorage
-      localStorage.setItem('totalDamageBonus', totalDamageBonus + sparkleDmgBoost);
-      localStorage.setItem('totalResPen', totalResPen);
-      localStorage.setItem('sparkleAtk', sparkleAtk);
-      localStorage.setItem('sparkleCritDmgBuff', sparkleCritDmgBuff);
-
-      alert('Support buffs saved successfully!');
-    }
-
-    function goToMain() {
-      window.location.href = "index.html";
-    }
-  </script>
 </body>
 </html>
