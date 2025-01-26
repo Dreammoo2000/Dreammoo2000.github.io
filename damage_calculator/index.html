@@ -110,8 +110,7 @@
     <label for="EnemyLevel">Enemy Level:</label>
     <input type="number" id="EnemyLevel" value="1" step="1" onchange="calculateDerivedVariables()"><br>
 
-    <button type="button" onclick="calculateDamage()">Calculate Damage</button>
-    <button id="AbsorbBuffsButton" type="button" onclick="absorbBuffs()">Absorb Buffs</button>
+    <button id="CalculateAndAbsorb" type="button" onclick="absorbBuffs(); calculateDamage();">Absorb Buffs & Calculate Damage</button>
 
 
     
